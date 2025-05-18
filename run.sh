@@ -269,7 +269,7 @@ if [ -f Fundo.jpg ] && [ ! -f /usr/share/backgrounds/Zorinori.jpg ]; then
 fi
 if [ -f Fundo-Dark.jpg ] && [ ! -f /usr/share/backgrounds/Zorin-Darkori.jpg ]; then
 	mv -f /usr/share/backgrounds/Zorin-Dark.jpg /usr/share/backgrounds/Zorin-Darkori.jpg
-	cp Zorin.jpg /usr/share/backgrounds/Zorin-Dark.jpg
+	cp /usr/share/backgrounds/Zorin.jpg /usr/share/backgrounds/Zorin-Dark.jpg
 fi
 
 cp -f scriptscustom.zip /etc/skel/custom/scriptscustom

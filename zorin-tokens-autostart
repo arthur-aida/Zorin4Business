@@ -1,0 +1,59 @@
+#!/bin/bash
+# The contents of this file are released under the GNU General Public License.
+# Feel free to reuse the contents of this work, as long as the resultant works give proper
+# attribution and are made publicly available under the GNU General Public License.
+# https://www.gnu.org/licenses/gpl-faq.en.html#GPLRequireSourcePostedPublic
+#-------------------------------------------------------------------------------------------------------------------------------
+# Este script é um software livre; você pode redistribuí-lo e/ou
+#  modificá-lo dentro dos termos da Licença Pública Geral GNU como
+#  publicada pela Free Software Foundation (FSF); na versão 3 da
+#  Licença, ou (a seu critério) qualquer versão posterior.
+# Este programa é distribuído na esperança de que possa ser útil,
+#  mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+#  a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+#  Licença Pública Geral GNU para maiores detalhes.
+#-------------------------------------------------------------------------------------------------------------------------------
+#    CARREGA OS DRIVERS DE TOKENS NO ESPAÇO DO NOVO USUÁRIO PARA USO JURÍDICO, CORPORATIVO OU COMERCIAL 
+#-------------------------------------------------------------------------------------------------------------------------------
+#
+# Partes deste script são adaptações de fontes disponíveis na internet. Objetivo preparar S.O. sabores ?BUNTU e DEBIAN para uso corporativo
+# Compilado por arthur.aida@gmail.com
+# Arquivos correlacionados em https://drive.google.com/drive/folders/1JU3TpAYm3-7nUWTZ0rGMWjidQbHo_jak?usp=sharing
+#
+# Os links dos arquivos citados neste script podem ficar desatualizados. EM CASO DE ERROS PESQUISE O NOVO LINK E ATUALIZE NO SCRIPT.
+#
+
+# based in zorin-gnome-tour-autostart
+. .config/user-dirs.dirs
+. /etc/os-release
+. /etc/om.ips
+
+# cria uma tarefa de limpeza para o usuário não root
+crontab -l > /tmp/TstCRON
+isInFile=$(cat /tmp/TstCRON | grep -c "etc/clean.sh")
+if [ $isInFile -eq 0 ]; then
+	(crontab -l ; echo "20 13 20 */2 * /etc/clean.sh") | crontab -
+fi
+rm -f /tmp/TstCRON
+
+if [ "$(id -u)" != "1000" ]; then
+	zenity   --warning --text="ATENÇÃO! OPERAÇÃO ÚNICA! SERÁ HABILITADO OS DRIVERS DOS TOKENS \n \n Aguarde o fechamento de todas as janelas do Mozilla Firefox." --width=450 --height=100 --timeout=15
+fi
+sh  /etc/skel/CARREGAdriverTOKEN.sh
+
+if ! grep -zq casper /proc/cmdline; then
+	/usr/bin/firefox-esr "https://hod.serpro.gov.br"  </dev/null &>/dev/null &
+	sleep 15; ESR=`pidof firefox-esr`; kill $ESR
+fi
+if ! grep -zq casper /proc/cmdline; then
+	/usr/bin/firefox "http://www.google.com.br" </dev/null &>/dev/null &
+	sleep 15; FFO=`pidof firefox`; kill $FFO
+fi
+
+sh  /etc/skel/CARREGAdriverTOKEN.sh
+
+
+if [[ -e ~/.config/autostart/zorin-tokens-autostart.desktop ]]; then
+	rm ~/.config/autostart/zorin-tokens-autostart.desktop
+fi
+

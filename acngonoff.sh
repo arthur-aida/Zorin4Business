@@ -1,0 +1,87 @@
+#!/bin/bash
+# The contents of this file are released under the GNU General Public License.
+# Feel free to reuse the contents of this work, as long as the resultant works give proper
+# attribution and are made publicly available under the GNU General Public License.
+# https://www.gnu.org/licenses/gpl-faq.en.html#GPLRequireSourcePostedPublic
+#-------------------------------------------------------------------------------------------------------------------------------
+# Este script é um software livre; você pode redistribuí-lo e/ou
+#  modificá-lo dentro dos termos da Licença Pública Geral GNU como
+#  publicada pela Free Software Foundation (FSF); na versão 3 da
+#  Licença, ou (a seu critério) qualquer versão posterior.
+# Este programa é distribuído na esperança de que possa ser útil,
+#  mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+#  a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+#  Licença Pública Geral GNU para maiores detalhes.
+#-------------------------------------------------------------------------------------------------------------------------------
+# Script acionado pelo run.sh. Ativa o APTCACHER-NG nos possíveis endereços onde possa estar disponível. 
+#-------------------------------------------------------------------------------------------------------------------------------
+# Partes deste script são adaptações de fontes disponíveis na internet. Objetivo preparar S.O. sabores ?BUNTU e DEBIAN para uso corporativo
+# Compilado por arthur.aida@gmail.com
+# Arquivos correlacionados em https://drive.google.com/drive/folders/1JU3TpAYm3-7nUWTZ0rGMWjidQbHo_jak?usp=sharing
+#
+#echo "Chamada do script: "$(basename $0) "-----------------------------------------------------------------------------------------------------------"
+if [ -f /etc/om.ips  ]; then
+	. /etc/om.ips
+fi
+# Variavel que armazena o IP recuperado da conexão ativa
+I_P=`ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1`
+
+# Variaveis que define os três primeiros octetos dinamicamente de um endereço IP a partir de I_P
+O1=`echo $I_P | cut -d . -f 1`
+O2=`echo $I_P | cut -d . -f 2`
+O3=`echo $I_P | cut -d . -f 3`
+
+# O quarto e último octeto são variáveis com conteúdo fixos assim como o classe da rede
+O4="0"
+CLASSE="24"
+
+# Redefine a variavel CLASSE se hostsallow2="sshd : 10.XX.YYY.0/ZZ" existir e for lido de om.ips
+nc -w 1 -v $APTCACHER $CACHEPORT < /dev/null
+if [ $? -eq 0 ]; then
+	CLASSE=`echo $hostsallow2 | cut --delimiter=/ -f2`
+fi
+
+# Define a variavel LA_N 
+LA_N=$O1"."$O2"."$O3"."$O4"/"$CLASSE
+
+# Redes LAN's default do KVM
+KVM1="192.168.122.0/24"
+KVM2="192.168.123.0/24"
+
+# Remove configuração anterior do proxy 
+if [ -f /etc/apt/apt.conf.d/00aptproxy ]; then
+	rm -f /etc/apt/apt.conf.d/00aptproxy
+fi
+
+
+if [ $LA_N = $KVM1 ] || [ $LA_N = $KVM2 ]; then
+	# Se o host for uma VM dentro do KVM
+	CACHEPORT="3142"
+	
+	# Define as variaveis para acessar o AptCacherNG conforme dados da conexão ativa obtidos em I_P
+	HTP="http://"$O1"."$O2"."$O3".1:"$CACHEPORT
+	FTP="ftp://"$O1"."$O2"."$O3".1:"$CACHEPORT
+
+	# Normalmente o IP do AptCacher no ambiente KVM está apontado par o primeiro Ip disponivel da rede KVM
+	AC_NG=$O1"."$O2"."$O3".1"
+	nc -w 1 -v $AC_NG $CACHEPORT < /dev/null
+	if [ $? -eq 0 ] && [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
+		echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+	fi
+else
+	# Se o host estiver na LAN do provedor, le a variavel APTCACHER definida em om.ips
+
+	# Define as variaveis para acessar o AptCacherNG conforme dados da conexão ativa obtidos em I_P
+	HTP="http://"$O1"."$O2"."$O3".1:"$CACHEPORT
+	FTP="ftp://"$O1"."$O2"."$O3".1:"$CACHEPORT
+
+	nc -w 1 -v $APTCACHER $CACHEPORT < /dev/null
+	if [ $? -eq 0 ]; then
+		echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+	fi
+fi
+

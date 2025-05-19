@@ -44,27 +44,49 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
 
 5. BENEFÍCIOS ESPERADOS DA CUSTOMIZAÇÃO
 Os recursos providos e descritos sumariamente estão disponíveis após a criação de um novo usuário não administrador:
+
     A) Reabilitação automática de impressoras pausadas, minimizando visitas de suporte ao usuário;
+   
     B) Gerenciamento remoto de impressoras USB compartilhadas no navegador WEB para o administrador, via endereço IP da estação onde está a porta USB;
+   
     C) Desativação (nos parâmetros do CUPS) do anúncio por broadcast de impressoras compartilhadas para evitar a poluição na rede;
+   
     D) Os nomes dos hosts são atribuído dinamicamente através do servidor de DHCP, via cadastro do IP e MAC reservado juntamente com o nome do hostname definidos no serviço DNSmasq;
+   
     E) Possibilidade de pré-configuração da página inicial no Mozilla Firefox SFC (definido na variavel site no arquivo adv.ips/gac.ips/hgu.ips) reabilitando das linhas da seção “APLICA A PERSONALIZAÇÃO CORPORATIVA AO MOZILLA STANDARD” no arquivo script4om.sh;
+   
     F) Geração dinâmica e integração de senhas e passkeys no keepassxc com navegadores;
+   
     G) Disponibilidade do wine stable (com HOLD, exceto perfil doméstico) para executar ferramentas corporativas legadas no Zorin OS;
+   
     H) Disponibilidade do JAVA no Firefox ESR para o HOD do SERPRO, sites e-CAC, eSOCIAL, contratos e pregões no gov.br, prescrição eletrônica do CFM, CERTILLION, PJ-E, etc;
+   
     I) Disponibilidade do terminal PW3270 para acesso ao HOD;
+   
     J) Uso da ferramenta RECOLL para localização de sequências de caracteres alfanuméricos ou palavras em documentos;
+   
     K) O mozilla ESR autentica em tokens DXSafe, G&D STARSIGN, SAFENET e ALADDIN, quando criado um segundo usuário;
+   
     L) Disponibilidade do navegador MS EDGE para acessar o conectividade social v2 instalando os plugins listados em https://contabilplay.com.br/como-instalar-o-kriptonita-no-microsoft-edge-para-uso-da-conectividade-social-icp-v2/;
+   
     M) Disponibilidade do limpador de arquivos BleachBit, similar ao CCleaner;
+   
     N) Disponibilidade de fornecer terminais remotos ao usuário final através do protocolo spice via remote-viewer de VM instaladas no PVE;
+   
     O) Monitoramento on-line da saúde do HD/SSD via smartctl;
+   
     P) Instalação e atualização automática dos certificados para sites GovBR e do proxy no mozilla do usuário final (em alguns casos deve-se cadastrar o site no painel do java run-time);
+   
     Q) Disponibilidade do serviço ssh para manutenção remota (limitado a faixa da rede local informado no arquivo com extensão .ips);
+   
     R) Inclusão de dicionários temáticos para profissionais no LibreOffice;
+   
     S) Inclusão do assinador-serpro para assinatura de documentos nas páginas web do e-SOCIAL e e-CAC conjugado ao JAVA (alguns sites exigem cadastro no java);
-    T) Auto-reconhecimento da maioria de impressoras Canon, Samsung, Brother, Epson e HP (HP antigas, vide orientações abaixo); 
+   
+    T) Auto-reconhecimento da maioria de impressoras Canon, Samsung, Brother, Epson e HP (HP antigas, vide orientações abaixo);
+   
     U) O mozilla ESR suporta o plugin SDK-Desktop, quando criado um segundo usuário (instruções na letra V);
+   
     V) O <Instalador do SDK-Desktop> (versão 1.0.36) deve ser executado com acesso a internet, como administrador ou usuário com permissões de administrador, ativado o botão “Administrador” em Configurações da conta do usuário e seguir as orientações do instalador. Reinicie o S.O. e logue-se no usuário criado com permissão de sudo, localize no menu e acione o SDK-Desktop e aguarde a janela do terminal, forneça a senha na primeira vez e mantenha a janela aberta. Abra o Mozilla ESR, digite na caixa de endereços “about:preferences”, na caixa  “Procurar em configurações” digite “ver certificados” e clique no botão “Ver certificados...”, abre-se a janela Gerenciador de certificados, clique na aba “Autoridades”, clique no botão “Importar…”, execute duplo clique em “Pasta pessoal”,  localize a pasta sdk-web, execute duplo clique no mesmo, execute duplo clique na pasta CA, clique sobre SDK-Desktop-CA.crt, clique no botão “Selecionar”,  ative o botão “Confiar nesta CA para identificar sites” e “Confiar nesta autoridade certificadora para identificar usuários de e-mail” e por último no botão “Ok”.  Na barra de endereços do Mozilla ESR, digite o link a seguir para testar o funcionamento do plugin SDK-Desktop https://ar.acdefesa.mil.br/raweb/login  e forneça o PIN do seu Token ou SmartCard. Caso a página apresente uma janela de erro, certifique-se que a janela do plugin SDK-Desktop esteja aberta. Após apresentar a janela de login com as opções dos botões Login e Configurar, clique em configurar e marque Cartão inteligente para uso com SmartCards. Selecione “Arquivo PKCS12” em caso de autenticação por token.  Clique no botão “Procurar”, na janela Abrir, clique na caixa de listagem de “Examinar em:” e selecione a pasta /, na sequência localize e execute duplo clique na pasta opt e na subpasta sdk-desktop que mostrará três itens. Clique sobre o arquivo “sdk-desktop-1.0.36.jar” e no botão “Abrir” e por último no botão Ok. Será reapresentado a janela de login. Clique no botão Login e forneça a senha do seu token.  Como administrador, desative o botão “Administrador” em Configurações da conta do usuário.
 
 7. OBSERVAÇÕES

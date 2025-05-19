@@ -42,8 +42,7 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
         m) Verificar  se os drivers dos tokens estão listados no navegador via ícone Dispositivos de segurança...;
         n) desativar aplicações auto iniciados <HP System Tray Service>, <Miniaplicativo Blueman> se não for notebook, e <Screensaver> em Sessão e Inicialização para todas as estações Zorin OS.
 
-5. BENEFÍCIOS ESPERADOS DA CUSTOMIZAÇÃO
-Os recursos providos e descritos sumariamente estão disponíveis após a criação de um novo usuário não administrador:
+5. BENEFÍCIOS ESPERADOS E RECURSOS PROVIDOS DISPONÍVEIS APÓS A CRIAÇÃO DE UM NOVO USUÁRIO NÃO ADMINISTRADOR:
 
     A) Reabilitação automática de impressoras pausadas, minimizando visitas de suporte ao usuário;
    

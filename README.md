@@ -1,5 +1,4 @@
-# Zorin4Business - Repositório de scripts shell para ser executado no Zorin para prover as funcionalidades corporativas.
-# Memorial de customizações para uso geral de sistemas corporativos, governamentais, jurídicos, prescrições eletrônicas com tokens  DXSafe, G&D STARSIGN, SAFENET e ALADDIN
+# Zorin4Business - Repositório de scripts shell para ser executado no Zorin para prover funcionalidades corporativas de uso geral em sistemas corporativos, governamentais, jurídicos e prescrições eletrônicas com tokens  DXSafe, G&D STARSIGN, SAFENET e ALADDIN.
 
 
 1. DESCRIÇÃO

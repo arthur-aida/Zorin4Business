@@ -1,6 +1,5 @@
-# Zorin4Business - Este repositório é uma coleção de scripts em shell para ser executado no linux Zorin para prover as funcionalidades corporativas.
-
-Memorial de customizações para uso geral de sistemas corporativos, governamentais, jurídicos, prescrições eletrônicas com tokens
+# Zorin4Business - Repositório de scripts shell para ser executado no Zorin para prover as funcionalidades corporativas.
+# Memorial de customizações para uso geral de sistemas corporativos, governamentais, jurídicos, prescrições eletrônicas com tokens  DXSafe, G&D STARSIGN, SAFENET e ALADDIN
 
 
 1. DESCRIÇÃO

@@ -105,6 +105,7 @@ Os procedimentos acima são operacionalizados via scripts  e consolida uma técn
 
 Veja os slide 17 a 22  do tutorial 3-InstalarSOnoKVMLinux.pdf para baixar e extrair os scripts e, no terminal e dentro da pasta do usuario administrador, execute o comando chmod +x *.sh para torná-los executáveis.
 
+
 Ainda no terminal digite no prompt <sudo su> para elevar-se ao modo root. Digite no terminal do root digite:  <bash run.sh> e instruções de como proceder a customização. No teminal digite somente comandos entre < >.
 
 Preferencialmente crie seu fork, mas quaisquer correções serão bem-vindas. Obrigado e bom uso do seu Zorin customizado para uso corporativo.

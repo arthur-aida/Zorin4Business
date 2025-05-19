@@ -32,7 +32,7 @@ if [ "$#" = "0" ]; then
 	echo "		Este script necessita de um dos números abaixo para customizar o seu linux de acordo com os perfis abaixo:"
 	echo
 	echo " 		1 - doméstico ou escritório móvel"
-	echo " 		2 - rede corporativa"
+	echo " 		2 - rede corporativa, com parâmetros de sua rede local configurados no arquivo gac.ips"
 	echo " 		3 - instituições de saúde"
 	echo
 	echo " 		OPÇOES VÁLIDAS# bash $0 1, bash $0 2 ou bash $0 3"

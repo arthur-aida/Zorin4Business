@@ -6,9 +6,9 @@ Repositório de scripts shell para execução no Zorin OS, visando prover funcio
 1. [Descrição](#1-descrição)
 2. [Objetivo](#2-objetivo)
 3. [Procedimentos do Administrador](#3-procedimentos-realizados-pelo-administrador)
-4. [Procedimentos realizados por tecnico da bancada](https://github.com/arthur-aida/Zorin4Business/edit/main/README.md#4-procedimentos-realizados-por-tecnico-da-bancada)
-5. [Benefícios esperados e recursos providos disponíveis após a criação de um novo usuário não administrador](https://github.com/arthur-aida/Zorin4Business/edit/main/README.md#5-benef%C3%ADcios-esperados-e-recursos-providos-dispon%C3%ADveis-ap%C3%B3s-a-cria%C3%A7%C3%A3o-de-um-novo-usu%C3%A1rio-n%C3%A3o-administrador)
-6. [Observações para quem for utilizar a customização a partir dos scripts](https://github.com/arthur-aida/Zorin4Business/edit/main/README.md#6-observa%C3%A7%C3%B5es-para-quem-for-utilizar-a-customiza%C3%A7%C3%A3o-a-partir-dos-scripts)
+4. [Procedimentos realizados por técnico da bancada](#4-procedimentos-realizados-por-tecnico-da-bancada)
+5. [Benefícios esperados e recursos providos disponíveis após a criação de um novo usuário não administrador](#5-benef%C3%ADcios-esperados-e-recursos-providos-dispon%C3%ADveis-ap%C3%B3s-a-cria%C3%A7%C3%A3o-de-um-novo-usu%C3%A1rio-n%C3%A3o-administrador)
+6. [Observações para quem for utilizar a customização a partir dos scripts](#6-observa%C3%A7%C3%B5es-para-quem-for-utilizar-a-customiza%C3%A7%C3%A3o-a-partir-dos-scripts)
 
 ## 1. Descrição
 Este repositório documenta e organiza processos planejados e executados como núcleo de boas práticas operacionais de TI, promovendo o uso eficiente dos recursos disponíveis para facilitar a manutenção e padronização dos sistemas.

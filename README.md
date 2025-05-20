@@ -92,5 +92,5 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
     P) Ainda no terminal digite no prompt "sudo su" para elevar-se ao modo root. Digite no terminal do root: "bash run.sh" e leias as instruções de como proceder a customização no teminal anexando um digito ao comando.
     Q) Preferencialmente crie seu fork, mas quaisquer correções serão bem-vindas. Obrigado e bom uso do seu Zorin customizado para uso corporativo.
 
-## Adicionar Considerações Finais
+## Considerações Finais
 Em resumo, este  LEIA-ME serve como um manual de implantação e manutenção eficiente do Zorin OS adaptado para ambientes empresariais, visando segurança, padronização, automação e facilidade de suporte.

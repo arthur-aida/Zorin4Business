@@ -6,7 +6,7 @@ Repositório de scripts shell para execução no Zorin OS, visando prover funcio
 1. [Descrição](#1-descrição)
 2. [Objetivo](#2-objetivo)
 3. [Procedimentos do Administrador](#3-procedimentos-realizados-pelo-administrador)
-4. [Procedimentos realizados por técnico da bancada](#4-procedimentos-realizados-por-tecnico-da-bancada)
+4. [Procedimentos realizados por técnico da bancada](#4-procedimentos-realizados-por-técnico-da-bancada)
 5. [Benefícios esperados e recursos providos disponíveis após a criação de um novo usuário não administrador](#5-benef%C3%ADcios-esperados-e-recursos-providos-dispon%C3%ADveis-ap%C3%B3s-a-cria%C3%A7%C3%A3o-de-um-novo-usu%C3%A1rio-n%C3%A3o-administrador)
 6. [Observações para quem for utilizar a customização a partir dos scripts](#6-observa%C3%A7%C3%B5es-para-quem-for-utilizar-a-customiza%C3%A7%C3%A3o-a-partir-dos-scripts)
 
@@ -28,7 +28,7 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
     I) Alterar as permissões (chmod e chown) da pasta /partimag/ e copiar a pasta da imagem customizada do nfs-server primário (notebook/desktop) para o nfs-server de produção(SFC), disponibilizando-o aos técnicos no IP do nfs-server;
     J) Preparar um pendrive de boot com o utilitário VENTOY para inicializar com a ISO baixada do Clonezilla.
 
-## 4. Procedimentos realizados por tecnico da bancada
+## 4. Procedimentos realizados por técnico da bancada
     A) Se For o Caso, execute um backup e o anote todos os requisitos do usuário, antes de inicializar o computador em manutenção com o pendrive botável do VENTOY para a restaurar a imagem a partir do nfs-server de produção com o Clonezilla (Ver o tutorial 5-RecoveryImagemDoNFS-server.pdf);
     B) Remover o pendrive e re-inicializar o computador pelo sistema operacional restaurado;
     C) Criar um novo usuário no Zorin OS.  No gerenciador XFCE, clicar no botão <Configurações avançadas> da janela de <Configurações de usuários>, na aba <Privilégios de usuários> selecionar e marcar tudo (Ver o tutorial 7-AdicionanovousuarioComum.pdf);
@@ -92,5 +92,5 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
     P) Ainda no terminal digite no prompt "sudo su" para elevar-se ao modo root. Digite no terminal do root: "bash run.sh" e leias as instruções de como proceder a customização no teminal anexando um digito ao comando.
     Q) Preferencialmente crie seu fork, mas quaisquer correções serão bem-vindas. Obrigado e bom uso do seu Zorin customizado para uso corporativo.
 
-
+## Adicionar Considerações Finais
 Em resumo, este  LEIA-ME serve como um manual de implantação e manutenção eficiente do Zorin OS adaptado para ambientes empresariais, visando segurança, padronização, automação e facilidade de suporte.

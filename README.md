@@ -1,13 +1,22 @@
-> # Zorin4Business - Repositório de scripts shell para ser executado no Zorin para prover funcionalidades de uso em sistemas corporativos, governamentais, jurídicos e prescrições eletrônicas com tokens DXSafe, G&D STARSIGN, SAFENET e ALADDIN.
+# Zorin4Business
 
+Repositório de scripts shell para execução no Zorin OS, visando prover funcionalidades para ambientes corporativos, governamentais, jurídicos e prescrições eletrônicas.
 
-# 1. Descrição
-Descreve-se aqui os processos planejados, executados e documentados como o núcleo de boas práticas operacionais sob responsabilidade da TI, aliado ao uso eficiente dos recursos disponíveis  para facilitar a instalação ou reinstalação do sistema operacional.
+## Sumário
+1. [Descrição](#1-descrição)
+2. [Objetivo](#2-objetivo)
+3. [Procedimentos do Administrador](#3-procedimentos-realizados-pelo-administrador)
+4. [Procedimentos realizados por tecnico da bancada](https://github.com/arthur-aida/Zorin4Business/edit/main/README.md#4-procedimentos-realizados-por-tecnico-da-bancada)
+5. [Benefícios esperados e recursos providos disponíveis após a criação de um novo usuário não administrador](https://github.com/arthur-aida/Zorin4Business/edit/main/README.md#5-benef%C3%ADcios-esperados-e-recursos-providos-dispon%C3%ADveis-ap%C3%B3s-a-cria%C3%A7%C3%A3o-de-um-novo-usu%C3%A1rio-n%C3%A3o-administrador)
+6. [Observações para quem for utilizar a customização a partir dos scripts](https://github.com/arthur-aida/Zorin4Business/edit/main/README.md#6-observa%C3%A7%C3%B5es-para-quem-for-utilizar-a-customiza%C3%A7%C3%A3o-a-partir-dos-scripts)
 
-# 2. Objetivo
+## 1. Descrição
+Este repositório documenta e organiza processos planejados e executados como núcleo de boas práticas operacionais de TI, promovendo o uso eficiente dos recursos disponíveis para facilitar a manutenção e padronização dos sistemas.
+
+## 2. Objetivo
 O objetivo é garantir que seja reproduzido em todos os computadores dos usuários os mesmos procedimentos de manutenção de forma padronizada e rápida. Há os procedimentos obrigatoriamente realizados pelo administrador responsável pelo ambiente e os procedimentos inerentes ao técnico na bancada. É recomendado que o administrador execute todos os processos e transfira as atividades executivas específicas aos técnicos para completar o ciclo.
 
-# 3. Procedimentos realizados pelo Administrador
+## 3. Procedimentos realizados pelo Administrador
     A) Preparação de um desktop/notebook (mínimo um I3, 6G RAM, SSD 240G) pela execução do script preparatório nfs-server.sh que instala o KVM-Linux e o  nfs-server (Ver o tutorial 1-PrepararNotebookComNFS-Server.pdf);
     B) Download das ISOs das versões estáveis do Clonezilla e do Linux Zorin OS para inicializar no gerenciador de máquinas virtuais VMM (do KVM-linux);
     C) Configuração do modelo de máquina virtual (BIOS ou  UEFI) com no mínimo 2 (4 melhor) vCPUs virtuais – 2GB(4GB melhor) RAM  - HD virtual, dinamicamente alocado de 74 GB - <ver no google Gigabytes X Gibi bytes e digite 80 na caixa gigabytes>). Como criar o HD virtual para uma nova VM KVM no modelo thin provisioning com alocação dinâmica de espaço <qemu-img create -f qcow2 vm/vm.qcow2 74G> supondo que na pasta atual exista a subpasta vm (Ver o tutorial 2-ConfigurarVMnoKVM.pdf);
@@ -19,7 +28,7 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
     I) Alterar as permissões (chmod e chown) da pasta /partimag/ e copiar a pasta da imagem customizada do nfs-server primário (notebook/desktop) para o nfs-server de produção(SFC), disponibilizando-o aos técnicos no IP do nfs-server;
     J) Preparar um pendrive de boot com o utilitário VENTOY para inicializar com a ISO baixada do Clonezilla.
 
-# 4. Procedimentos realizados por tecnico da bancada
+## 4. Procedimentos realizados por tecnico da bancada
     A) Se For o Caso, execute um backup e o anote todos os requisitos do usuário, antes de inicializar o computador em manutenção com o pendrive botável do VENTOY para a restaurar a imagem a partir do nfs-server de produção com o Clonezilla (Ver o tutorial 5-RecoveryImagemDoNFS-server.pdf);
     B) Remover o pendrive e re-inicializar o computador pelo sistema operacional restaurado;
     C) Criar um novo usuário no Zorin OS.  No gerenciador XFCE, clicar no botão <Configurações avançadas> da janela de <Configurações de usuários>, na aba <Privilégios de usuários> selecionar e marcar tudo (Ver o tutorial 7-AdicionanovousuarioComum.pdf);
@@ -40,7 +49,7 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
         m) Verificar  se os drivers dos tokens estão listados no navegador via ícone Dispositivos de segurança...;
         n) desativar aplicações auto iniciados <HP System Tray Service>, <Miniaplicativo Blueman> se não for notebook, e <Screensaver> em Sessão e Inicialização para todas as estações Zorin OS.
 
-# 5. Benefícios esperados e recursos providos disponíveis após a criação de um novo usuário não administrador:
+## 5. Benefícios esperados e recursos providos disponíveis após a criação de um novo usuário não administrador:
     A) Reabilitação automática de impressoras pausadas, minimizando visitas de suporte ao usuário;
     B) Gerenciamento remoto de impressoras USB compartilhadas no navegador WEB para o administrador, via endereço IP da estação onde está a porta USB;
     C) Desativação (nos parâmetros do CUPS) do anúncio por broadcast de impressoras compartilhadas para evitar a poluição na rede;
@@ -64,7 +73,7 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
     U) O mozilla ESR suporta o plugin SDK-Desktop, quando criado um segundo usuário (instruções na letra V);
     V) O <Instalador do SDK-Desktop> (versão 1.0.36) deve ser executado com acesso a internet, como administrador ou usuário com permissões de administrador, ativado o botão “Administrador” em Configurações da conta do usuário e seguir as orientações do instalador. Reinicie o S.O. e logue-se no usuário criado com permissão de sudo, localize no menu e acione o SDK-Desktop e aguarde a janela do terminal, forneça a senha na primeira vez e mantenha a janela aberta. Abra o Mozilla ESR, digite na caixa de endereços “about:preferences”, na caixa  “Procurar em configurações” digite “ver certificados” e clique no botão “Ver certificados...”, abre-se a janela Gerenciador de certificados, clique na aba “Autoridades”, clique no botão “Importar…”, execute duplo clique em “Pasta pessoal”,  localize a pasta sdk-web, execute duplo clique no mesmo, execute duplo clique na pasta CA, clique sobre SDK-Desktop-CA.crt, clique no botão “Selecionar”,  ative o botão “Confiar nesta CA para identificar sites” e “Confiar nesta autoridade certificadora para identificar usuários de e-mail” e por último no botão “Ok”.  Na barra de endereços do Mozilla ESR, digite o link a seguir para testar o funcionamento do plugin SDK-Desktop o site do acdefesa e clique na opção "Operação" no menu Serviços e forneça o PIN do seu Token ou SmartCard. Caso a página apresente uma janela de erro, certifique-se que a janela do plugin SDK-Desktop esteja aberta. Após apresentar a janela de login com as opções dos botões Login e Configurar, clique em configurar e marque Cartão inteligente para uso com SmartCards. Selecione “Arquivo PKCS12” em caso de autenticação por token.  Clique no botão “Procurar”, na janela Abrir, clique na caixa de listagem de “Examinar em:” e selecione a pasta /, na sequência localize e execute duplo clique na pasta opt e na subpasta sdk-desktop que mostrará três itens. Clique sobre o arquivo “sdk-desktop-1.0.36.jar” e no botão “Abrir” e por último no botão Ok. Será reapresentado a janela de login. Clique no botão Login e forneça a senha do seu token.  Como administrador, desative o botão “Administrador” em Configurações da conta do usuário.
 
-# 7. Observações para quem for utilizar a customização a partir dos scripts
+## 6. Observações para quem for utilizar a customização a partir dos scripts
     A) Sugere-se uma infraestrutura provisionada com um Proxmox-VE (PVE) e um PROXMOX BACKUP SERVER (PBS). O PVE pode prover recursos de virtualização para os serviços de DHCP/DNS/nome de hosts/NTP, página da web interna, serviço de banco de dados, serviço de gestão de atendimento, serviço de compartilhamento de arquivos autenticado, serviço de gestão de preços praticados no mercado, serviço de gestão de escalas, serviço de gerenciamento de boletins, etc. O PBS provê backup automatizado para todas as VM do PVE e via script para todos os desktops. Os backups dos desktops podem ser recuperados via download na página autenticada do PBS e extraídos pelo comando: pxar extract <archive> [<target>] [OPTIONS].
     B) Ao prover um ambiente de rede com um servidor de DHCP com reserva de IP, preferencialmente provido pelo DNSMasq, que informa o IP do servidor de horário, nome do host e provisiona cache de DNS para a rede local, todos os endereços MAC das estações da rede devem estar previamente cadastrados com o respectivo IP e o hostname (com 14 caracteres alfabéticos não acentuados) para que o Clonezilla recupere o IP e se comunique com o IP do servidor NFS.  Informe aos técnicos o IP do NFS-SERVER e o caminho onde está a imagem a ser clonada com o Clonezilla. Este SETUP é recomendado para todos os ambientes de rede, pois automatiza muitas tarefas, facilita o processo e minimiza o tempo total que a estação fica em manutenção. Caso a rede local trabalhe com IP fixo, selecionar a opção <<static>> em [Escolha o modo de configuração de rede para esta placa de rede: eth0] da janela | Configuração de rede | e informar sempre o mesmo IP reservado só para manutenção.
     C) A escolha do Zorin OS (scripts compatibilizados até versão 17.3), após testes com outros sistemas, deu-se por sua maior estabilidade com sistemas legados Windows (a instalação do WINE 4.0.X em modo HOLD, que pode ser superado, com pequenas alterações, via Phoenicis PlayOnLinux ou com o Bottles) e disponibilidade de drivers dos tokens, o que reflete em maior compatibilidade com o ambiente corporativo. Os scripts devem funcionar, com pequenos ajustes,  nos sabores ?buntu (18.04 ao 22.04) e derivados. Novas versões com a solução das dependências de drivers e as especifidades do gerenciador de janela.

@@ -45,6 +45,9 @@ if [ "$1" != "1" ] && [ "$1" != "2" ] && [ "$1" != "3" ]; then
 	exit
 fi
 
+# Garantia de que os scripts são executáveis 
+chmod +x *.sh
+
 time ./run.sh $1 > custom.log 2>&1
 
 USERADM=`grep '^sudo:.*$' /etc/group | cut -d: -f4`

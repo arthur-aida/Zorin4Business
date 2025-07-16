@@ -104,6 +104,7 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-jdk11-installer.gpg] 
 sh -x acngonoff.sh
 apt purge 
 apt update
+apt-get reinstall fwupd -y
 apt install --assume-yes libappindicator1 openssh-server sshfs xterm
 dpkg --configure -a 
 apt -f install -y 

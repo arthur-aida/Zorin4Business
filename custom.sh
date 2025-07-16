@@ -61,6 +61,8 @@ add-apt-repository ppa:$nome -y
 # HABILITA RESPOSTA PARA A INSTALAÇÃO AUTOMÁTICA DE NOVAS FONTES TRUETYPE
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 
+apt-get install --option=force-confdef fwupd -y
+
 # ATUALIZA O SISTEMA OPERACIONAL
 apt update && apt full-upgrade -y ; apt --fix-broken install -y; apt autoremove -y
 

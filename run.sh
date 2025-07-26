@@ -246,7 +246,9 @@ fi
 dpkg -i /tmp/setup-deb-64.deb 
 apt install brave-browser zorin-connect -y
 
-sh -x TokenDXSafe.sh 
+# O script TokenDXSafe.sh foi desativado por necessitar de interação. DXSafeMiddleware.sh é autônomo.
+# sh -x TokenDXSafe.sh 
+sh -x DXSafeMiddleware.sh
 
 apt autoremove -y
 apt clean

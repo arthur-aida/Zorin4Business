@@ -301,7 +301,7 @@ chmod 755 /etc/serproass.sh
 
 # Cria o lançador de instalação do Assinador do CERTILLION
 echo '[Desktop Entry]' > /usr/share/applications/InstaladorCertillion.desktop
-echo 'Name=Instala Assinador CFM' >> /usr/share/applications/InstaladorCertillion.desktop
+echo 'Name=Instala Assinador Certillion' >> /usr/share/applications/InstaladorCertillion.desktop
 echo 'Exec=/bin/bash /etc/certillion.sh' >> /usr/share/applications/InstaladorCertillion.desktop
 echo 'Type=Application' >> /usr/share/applications/InstaladorCertillion.desktop
 echo 'Encoding=UTF-8' >> /usr/share/applications/InstaladorCertillion.desktop
@@ -310,6 +310,18 @@ chmod  755 /usr/share/applications/InstaladorCertillion.desktop
 chmod  +x  /usr/share/applications/InstaladorCertillion.desktop
 cp -f certillion.sh /etc/certillion.sh
 chmod 755 /etc/certillion.sh
+
+# Cria o lançador de instalação do Assinador do PJE Office
+echo '[Desktop Entry]' > /usr/share/applications/InstaladorPJE.desktop
+echo 'Name=Instala Assinador PJE Office' >> /usr/share/applications/InstaladorPJE.desktop
+echo 'Exec=/bin/bash /etc/pjeoffice.sh' >> /usr/share/applications/InstaladorPJE.desktop
+echo 'Type=Application' >> /usr/share/applications/InstaladorPJE.desktop
+echo 'Encoding=UTF-8' >> /usr/share/applications/InstaladorPJE.desktop
+echo 'Categories=System;' >> /usr/share/applications/InstaladorPJE.desktop
+chmod 755 /usr/share/applications/InstaladorPJE.desktop
+chmod +x  /usr/share/applications/InstaladorPJE.desktop
+cp -f pjeoffice.sh /etc/pjeoffice.sh
+chmod 755 /etc/pjeoffice.sh
 
 if [ ! -z "$siscofis" ]; then
 	# (Re)Cria o lançador de instalação do plugin SDK-Desktop

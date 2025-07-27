@@ -24,6 +24,7 @@
 #
 . /etc/os-release
 . /etc/om.ips
+. /$HOME/.config/user-dirs.dirs
 
 if [ -z "$(groups $(whoami) | grep sudo)" ]; then
 	zenity   --warning --text="Este usuário não possui as permissões de [sudo] para executar este procedimento. \n\nPreferencialmente crie um usuário, adicione-o ao grupo sudo e logue-se para que \n\nseja criado a respectiva área de trabalho. Para executar isto, abra o Desktop do \n\nadministrador  e crie o novo usuario. A seguir abra um terminal para adicionar o  \n\nnovo usuário ao grupo sudo digitando o comando a seguir no terminal: \n\nsudo usermod -aG sudo NOMEDOUSARIO"

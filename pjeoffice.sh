@@ -13,7 +13,7 @@
 #  a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 #  Licença Pública Geral GNU para maiores detalhes.
 #-------------------------------------------------------------------------------------------------------------------------------
-# Script acionado pelo menu para instalar/executar o Assinador Certillion do CFM
+# Script acionado pelo menu para instalar/executar o Assinador PJE Office PRO
 #-------------------------------------------------------------------------------------------------------------------------------
 # Partes deste script são adaptações de fontes disponíveis na internet. 
 # Objetivo: preparar os sabores de ?BUNTU e DEBIAN para uso corporativo
@@ -26,16 +26,17 @@
 # Example: Manually download and install the .deb package
 # wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb  -P /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb 
 # dpkg -i  -P /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+
 . /$HOME/.config/user-dirs.dirs
 
 if [ "$(id -u)" = "1000" ] || [ "$(id -u)" = "0" ] ; then
-	zenity   --warning --text="O Certillion não será instalado no usuário administrador ou root. \n \nCrie um novo usuário convencional para instalar." --width=450 --height=100 --timeout=15
+	zenity   --warning --text="O PJE Office não será instalado no usuário administrador ou root. \n \nCrie um novo usuário convencional para instalar." --width=450 --height=100 --timeout=15
 	exit
 else
-	if [ ! -d $HOME/signer-certillion ]; then
+	if [ ! -d $HOME/pjeoffice-pro ]; then
 		zenity   --warning --text="1 - O download da aplicação pode demorar;\n \n2 - Esta janela será fechada em 30s para iniciar o download;\n \n3 - Na próxima janela, clique no botão OK após o download ser concluído;\n \n4 - Selecione as opções quando solicitado e; \n \n5 - Prossiga até finalizar a instalação. " --width=650 --height=150 --timeout=30
-		if [ ! -f  /tmp/Assinador-Certillion-1.7.3.run  ]; then
-			wget https://download.certillion.com/signer/installer/linux/Assinador-Certillion-1.7.3.run  -P /tmp/ 2>&1 | sed -u 's/.* \([0-9]\+%\)\ \+\([0-9.]\+.\) \(.*\)/\1\n# a \2\/s, EM \3/' | zenity --progress --title="Baixando..."
+		if [ ! -f /tmp/pjeoffice-pro-v2.5.16u-linux_x64.zip  ]; then
+			wget https://pje-office.pje.jus.br/pro/pjeoffice-pro-v2.5.16u-linux_x64.zip  -P /tmp/ 2>&1 | sed -u 's/.* \([0-9]\+%\)\ \+\([0-9.]\+.\) \(.*\)/\1\n# a \2\/s, EM \3/' | zenity --progress --title="Baixando..."
 
 			RUNNING=0
 			while [ $RUNNING -eq 0 ]
@@ -46,15 +47,23 @@ else
 			RUNNING=1
 			fi
 			done
+			unzip -o -d $HOME /tmp/pjeoffice-pro-v2.5.16u-linux_x64.zip
+			chmod +x chmod +x $HOME/pjeoffice-pro/pjeoffice-pro.sh
+			wget https://pjeoffice.trf3.jus.br/pjeoffice-pro/docs/geral/logo.png -P $HOME/pjeoffice-pro/
+			
+			# Cria o ícone de execução PJEOFFICE no Desktop do usuário 
+			echo '[Desktop Entry]' >  "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			echo 'Name=PJE Office PRO' >> "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			echo 'Exec=bash pjeoffice-pro/pjeoffice-pro.sh' >> "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			echo 'Type=Application' >> "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			echo 'Categories=Office;' >> "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			echo 'Terminal=false' >> "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			echo 'Icon='$HOME'/pjeoffice-pro/logo.png' >> "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			chmod  755 "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			chmod  +x "$XDG_DESKTOP_DIR"/pjeoffice.desktop
+			cp -f "$XDG_DESKTOP_DIR"/pjeoffice.desktop $HOME/pjeoffice-pro/
+			cp -f "$XDG_DESKTOP_DIR"/pjeoffice.desktop $HOME/.local/share/applications/
 		fi
-		if [ ! -d $HOME/signer-certillion ]; then
-			mkdir -p $HOME/signer-certillion
-		fi
-		chmod +x /tmp/Assinador-Certillion-1.7.3.run
-		exec /tmp/Assinador-Certillion-1.7.3.run
-		ln -s $HOME/.local/share/applications/Certillion.desktop "$XDG_DESKTOP_DIR"/Certillion.desktop
-		chmod +x "$XDG_DESKTOP_DIR"/Certillion.desktop
-
- fi
-	#exec "$HOME/
+	fi
 fi
+

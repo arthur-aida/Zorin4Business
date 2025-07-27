@@ -252,8 +252,8 @@ sh -x DXSafeMiddleware.sh
 
 # ATUALMENTE o Certillion EXIGE LOADING SHARED LIBRARIES: libcrypto.so.1.1
 # Example: Manually download and install the .deb package
-wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb  -P /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb 
-dpkg -i  -P /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -P /tmp/ 
+dpkg -i /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
 
 apt autoremove -y
 apt clean

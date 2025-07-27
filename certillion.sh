@@ -51,8 +51,9 @@ else
 		fi
 		chmod +x /tmp/Assinador-Certillion-1.7.3.run
 		exec /tmp/Assinador-Certillion-1.7.3.run
-		cp $HOME/.local/share/applications/Certillion.desktop $HOME/"Área de Trabalho"/Certillion.desktop
-		chmod +x $HOME/"Área de Trabalho"/Certillion.desktop
-	fi
+		ln -s $HOME/.local/share/applications/Certillion.desktop $HOME"/Área de Trabalho"/Certillion.desktop
+		chmod +x $HOME"/Área de Trabalho"/Certillion.desktop
+
+ fi
 	#exec "$HOME/
 fi

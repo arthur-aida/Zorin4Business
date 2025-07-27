@@ -22,7 +22,10 @@
 # https://drive.google.com/drive/folders/187bEL4f0feeYIpuYWtGfd2QIl8orTylp
 # Os links dos arquivos citados neste script podem ficar desatualizados. EM CASO DE ERROS PESQUISE O NOVO LINK E ATUALIZE NO SCRIPT.
 #
-# echo "Chamada do script: "$(basename $0) "-----------------------------------------------------------------------------------------------------------"
+# ATUALMENTE EXIGE LOADING SHARED LIBRARIES: libcrypto.so.1.1
+# Example: Manually download and install the .deb package
+wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb  -P /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb 
+dpkg -i  -P /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
 
 if [ "$(id -u)" = "1000" ] || [ "$(id -u)" = "0" ] ; then
 	zenity   --warning --text="O Certillion não será instalado no usuário administrador ou root. \n \nCrie um novo usuário convencional para instalar." --width=450 --height=100 --timeout=15

@@ -299,6 +299,18 @@ chmod  +x  /usr/share/applications/InstaladorAssinadorSepro.desktop
 cp -f serproass.sh /etc/serproass.sh
 chmod 755 /etc/serproass.sh
 
+# Cria o lançador de instalação do Assinador do CERTILLION
+echo '[Desktop Entry]' > /usr/share/applications/InstaladorCertillion.desktop
+echo 'Name=Instala Assinador CFM' >> /usr/share/applications/InstaladorCertillion.desktop
+echo 'Exec=/bin/bash /etc/certillion.sh' >> /usr/share/applications/InstaladorCertillion.desktop
+echo 'Type=Application' >> /usr/share/applications/InstaladorCertillion.desktop
+echo 'Encoding=UTF-8' >> /usr/share/applications/InstaladorCertillion.desktop
+echo 'Categories=System;' >> /usr/share/applications/InstaladorCertillion.desktop
+chmod  755 /usr/share/applications/InstaladorCertillion.desktop
+chmod  +x  /usr/share/applications/InstaladorCertillion.desktop
+cp -f certillion.sh /etc/certillion.sh
+chmod 755 /etc/certillion.sh
+
 if [ ! -z "$siscofis" ]; then
 	# (Re)Cria o lançador de instalação do plugin SDK-Desktop
 	echo '[Desktop Entry]' > /usr/share/applications/InstaladordoSdk.desktop

@@ -28,7 +28,7 @@ if [ ! -f /etc/Dexon/DXSafe/libDXSafePKCS11.x64.so ]; then
 	apt install net-tools cifs-utils curl git pcsc-tools pcscd cpuidtool libpcsclite-dev flex build-essential libusb-1.0-0-dev mlocate opensc -y
 	updatedb && locate libusb.h
 	pkg-config libusb-1.0 --libs –cflags
-	wget -r --tries=10 https://ccid.apdu.fr/files/ccid-1.5.2.tar.xz
+	wget -r --tries=10 https://ccid.apdu.fr/files/ccid-1.5.2.tar.bz2
 	bunzip2 ccid-1.5.2.tar.bz2
 	tar -xvf ccid-1.5.2.tar
 	cd ccid-1.5.2	

@@ -28,15 +28,17 @@ if [ ! -f /etc/Dexon/DXSafe/libDXSafePKCS11.x64.so ]; then
 	apt install net-tools cifs-utils curl git pcsc-tools pcscd cpuidtool libpcsclite-dev flex build-essential libusb-1.0-0-dev mlocate opensc -y
 	updatedb && locate libusb.h
 	pkg-config libusb-1.0 --libs –cflags
-	wget -r --tries=10 https://ccid.apdu.fr/files/ccid-1.5.2.tar.bz2
+	wget  -r --tries=10 https://ccid.apdu.fr/files/ccid-1.5.2.tar.bz2
 	bunzip2 ccid-1.5.2.tar.bz2
 	tar -xvf ccid-1.5.2.tar
+	rm ccid-1.5.2.tar
 	cd ccid-1.5.2	
 	./configure
 	make
 	make install
-	rm ccid-1.5.2
-	wget https://publicado.dexon.ind.br/DXSafe/Instaladores/DXSafe_2.x/2.0.2/DXSafeMiddleware_2.0.2_Linux_Ubuntu.22.04.deb
+	cd ..
+	rm -Rf ccid-1.5.2
+ 	wget https://publicado.dexon.ind.br/DXSafe/Instaladores/DXSafe_2.x/2.0.2/DXSafeMiddleware_2.0.2_Linux_Ubuntu.22.04.deb
 	dpkg -i DXSafeMiddleware_2.0.2_Linux_Ubuntu.22.04.deb
 	rm -f DXSafeMiddleware_2.0.2_Linux_Ubuntu.22.04.deb
 	apt --fix-broken install

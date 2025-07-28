@@ -38,11 +38,7 @@ if [ ! -f /etc/Dexon/DXSafe/libDXSafePKCS11.x64.so ]; then
 	rm ccid-1.5.2
 	wget https://publicado.dexon.ind.br/DXSafe/Instaladores/DXSafe_2.x/2.0.2/DXSafeMiddleware_2.0.2_Linux_Ubuntu.22.04.deb
 	dpkg -i DXSafeMiddleware_2.0.2_Linux_Ubuntu.22.04.deb
-
-	#wget https://repositorio-acp.acdefesa.mil.br/Drivers_Token/Dexon/Ubuntu/Drive_Ubuntu_22_04_install.zip -O /tmp/DX_Ubuntu_22.04_LTS.zip
-	#unzip -o -d /tmp /tmp/DX_Ubuntu_22.04_LTS.zip
-	#zenity   --warning --text="Será instalado o driver do DXToken compilado pelo site acdefesa. O original de www.dexon.ind.br/downloads/ não funciona." --width=650 --height=150
-	#bash /tmp/instala_drive_DXSAFE_2_0_2.sh
+	rm -f DXSafeMiddleware_2.0.2_Linux_Ubuntu.22.04.deb
 	apt --fix-broken install
 	cp -f /etc/Dexon/DXSafe/libDXSafePKCS11.x32.so /usr/lib/libDXSafePKCS11.x32.so
 	cp -f /etc/Dexon/DXSafe/libDXSafePKCS11.x64.so /usr/lib/libDXSafePKCS11.x64.so

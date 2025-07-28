@@ -323,29 +323,6 @@ chmod +x  /usr/share/applications/InstaladorPJE.desktop
 cp -f pjeoffice.sh /etc/pjeoffice.sh
 chmod 755 /etc/pjeoffice.sh
 
-if [ ! -z "$siscofis" ]; then
-	# (Re)Cria o lançador de instalação do plugin SDK-Desktop
-	echo '[Desktop Entry]' > /usr/share/applications/InstaladordoSdk.desktop
-	echo 'Name=Instalador do SDK-Desktop' >> /usr/share/applications/InstaladordoSdk.desktop
-	echo 'Exec=/bin/bash /etc/installSDKmenu.sh' >> /usr/share/applications/InstaladordoSdk.desktop
-	echo 'Type=Application' >> /usr/share/applications/InstaladordoSdk.desktop
-	echo 'Icon=/usr/share/icons/favicon.png' >> /usr/share/applications/InstaladordoSdk.desktop
-	echo 'Encoding=UTF-8' >> /usr/share/applications/InstaladordoSdk.desktop
-	echo 'Terminal=true' >> /usr/share/applications/InstaladordoSdk.desktop
-	echo 'Categories=System;' >> /usr/share/applications/InstaladordoSdk.desktop
-	chmod  755 /usr/share/applications/InstaladordoSdk.desktop
-	chmod  +x  /usr/share/applications/InstaladordoSdk.desktop
-	if [ ! -f /usr/share/icons/favicon.png ]; then
-		cp -f favicon.png /usr/share/icons/favicon.png
-	fi
-	cp -f installSDKmenu.sh /etc/installSDKmenu.sh
-	chmod 755 /etc/installSDKmenu.sh
-	chmod +x /etc/installSDKmenu.sh
-	if [ -f $curdir/cache/AdicionarCertificadoMozilla.mp4 ] && [ ! -f /var/local/AdicionarCertificadoMozilla.mp4   ]; then
-		cp -f $curdir/cache/AdicionarCertificadoMozilla.mp4 /var/local/
-		chmod 755 /var/local/AdicionarCertificadoMozilla.mp4
-	fi
-fi
 # "↓↓↓↓↓↓↓↓↓ REMOVE CHAVES DE CONEXÕES ANTIGAS"
 if [ -d .ssh/ ]; then
 	rm -rf .ssh/

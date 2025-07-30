@@ -280,6 +280,7 @@ echo 'Name=Bonita [Instalar/executar]' >> /usr/share/applications/InstaladordoBo
 echo 'Exec=/bin/bash /etc/bscautostart.sh' >> /usr/share/applications/InstaladordoBonita.desktop
 echo 'Type=Application' >> /usr/share/applications/InstaladordoBonita.desktop
 echo 'StartupNotify=true' >> /usr/share/applications/InstaladordoBonita.desktop
+echo "Comment=diagramação, modelagem, processos, notação, BPMN, diagramas, fluxo, objetos,conexão, raias, artefatos, Business, Process, Notation" >> /usr/share/applications/InstaladordoBonita.desktop
 echo 'Encoding=UTF-8' >> /usr/share/applications/InstaladordoBonita.desktop
 echo 'Icon=./BonitaStudioCommunity/bonitasoft-icon-128-128-transparent.png' >> /usr/share/applications/InstaladordoBonita.desktop
 echo 'Categories=System;' >> /usr/share/applications/InstaladordoBonita.desktop
@@ -294,6 +295,7 @@ echo '[Desktop Entry]' > /usr/share/applications/InstaladorAssinadorSepro.deskto
 echo 'Name=Instala Assinador Serpro' >> /usr/share/applications/InstaladorAssinadorSepro.desktop
 echo 'Exec=/bin/bash /etc/serproass.sh' >> /usr/share/applications/InstaladorAssinadorSepro.desktop
 echo 'Type=Application' >> /usr/share/applications/InstaladorAssinadorSepro.desktop
+echo "Comment=serpro, assinatura, digital, certificado, validação, ICP-Brasil, criptografia, segurança, eletrônica" >> /usr/share/applications/InstaladorAssinadorSepro.desktop
 echo 'Encoding=UTF-8' >> /usr/share/applications/InstaladorAssinadorSepro.desktop
 echo 'Categories=System;' >> /usr/share/applications/InstaladorAssinadorSepro.desktop
 chmod  755 /usr/share/applications/InstaladorAssinadorSepro.desktop
@@ -304,6 +306,7 @@ chmod 755 /etc/serproass.sh
 # Cria o lançador de instalação do Assinador do CERTILLION
 echo '[Desktop Entry]' > /usr/share/applications/InstaladorCertillion.desktop
 echo 'Name=Instala Assinador Certillion' >> /usr/share/applications/InstaladorCertillion.desktop
+echo "Comment=CFM, farmácia, receita, receituário, assinatura, certificado, validação, ICP-Brasil, criptografia, segurança, eletrônica" >> /usr/share/applications/InstaladorCertillion.desktop
 echo 'Exec=/bin/bash /etc/certillion.sh' >> /usr/share/applications/InstaladorCertillion.desktop
 echo 'Type=Application' >> /usr/share/applications/InstaladorCertillion.desktop
 echo 'Encoding=UTF-8' >> /usr/share/applications/InstaladorCertillion.desktop
@@ -317,6 +320,7 @@ chmod 755 /etc/certillion.sh
 echo '[Desktop Entry]' > /usr/share/applications/InstaladorPJE.desktop
 echo 'Name=Instala Assinador PJE Office' >> /usr/share/applications/InstaladorPJE.desktop
 echo 'Exec=/bin/bash /etc/pjeoffice.sh' >> /usr/share/applications/InstaladorPJE.desktop
+echo "Comment=pje, Processo, Judicial, PJeOffice, assinatura, digital, certificado, PKCS11, PJe Mobile, TRT, CNJ" >> /usr/share/applications/InstaladorPJE.desktop
 echo 'Type=Application' >> /usr/share/applications/InstaladorPJE.desktop
 echo 'Encoding=UTF-8' >> /usr/share/applications/InstaladorPJE.desktop
 echo 'Categories=System;' >> /usr/share/applications/InstaladorPJE.desktop

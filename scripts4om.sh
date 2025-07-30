@@ -99,6 +99,8 @@ if [ ! -f /home/$USERADM/"Área de Trabalho"/7-AdicionanovousuarioComum.pdf ]; t
 fi
 cp -f *.pdf /home/$USERADM/"Área de Trabalho"/  
 chattr +i   /home/$USERADM/"Área de Trabalho"/*.pdf
+cp -f cache/*.png /home/$USERADM/"Área de Trabalho"/  
+chattr +i   /home/$USERADM/"Área de Trabalho"/Ass*.png
 
 if [ ! -z "$siscofis" ]; then
 	if [ ! -f /etc/kes-lnx.zip ]; then

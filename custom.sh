@@ -282,21 +282,20 @@ else
 	VSO=$VERSION_CODENAME
 	
 	if [ $VSO = "bullseye" ]; then
-		wget https://download.bleachbit.org/bleachbit_5.0.0-0_all_debian11.deb -P /tmp/
+		wget https://www.bleachbit.org/download/file/t?file=bleachbit_5.0.0-0_all_debian11.deb -P /tmp/
 	fi
 	if [ $VSO = "bionic" ] || [ $VSO = "focal" ] || [ $VSO = "una" ] || [ $VSO = "elsie" ]; then
-		wget https://download.bleachbit.org/bleachbit_5.0.0-0_all_ubuntu2004.deb -P /tmp/
+		wget https://www.bleachbit.org/download/file/t?file=bleachbit_5.0.0-0_all_ubuntu2004.deb -P /tmp/
 	fi
 	if [ $VSO = "jammy" ] || [ $VSO = "victoria" ] || [ $VSO = "faye" ] || [ $VSO = "virginia" ]; then
-		wget https://download.bleachbit.org/bleachbit_5.0.0-0_all_ubuntu2204.deb  -P /tmp/
+		wget https://www.bleachbit.org/download/file/t?file=bleachbit_5.0.0-0_all_ubuntu2204.deb  -P /tmp/
 	fi
-
 	if [ $VSO = "bookworm" ]; then
-		wget https://download.bleachbit.org/bleachbit_5.0.0-0_all_debian12.deb -P /tmp/
+		wget https://www.bleachbit.org/download/file/t?file=bleachbit_5.0.0-0_all_debian12.deb -P /tmp/
 	fi
-	rm /tmp/bleachbit_*.deb
 fi
 dpkg -i --force-all /tmp/bleachbit*.deb
+rm /tmp/bleachbit_*.deb
 
 # https://www.vivaolinux.com.br/topico/Sed-Awk-ER-Manipulacao-de-Textos-Strings/Como-inserir-um-texto-num-lugar-especifico-de-um-aquivo-pela-linha-de-comando
 # APLICA-SE SOMENTE AO SERVIDOR PULSE AUDIO. É IGNORADO NOUTRAS SERVIDORES DE SOM

@@ -56,32 +56,29 @@ fi
 
 if [ $LA_N = $KVM1 ] || [ $LA_N = $KVM2 ]; then
 	# Se o host for uma VM dentro do KVM
-	CACHEPORT="3142"
+	#CACHEPORT é ignorado, pode ser definido em /etc/om.ips
 	
-	# Define as variaveis para acessar o AptCacherNG conforme dados da conexão ativa obtidos em I_P
-	HTP="http://"$O1"."$O2"."$O3".1:"$CACHEPORT
-	FTP="ftp://"$O1"."$O2"."$O3".1:"$CACHEPORT
+	# Define as variaveis para acessar o AptCacherNG na porta padrão no host do KVM, conforme dados da conexão ativa obtidos em I_P
+	HTP="http://"$O1"."$O2"."$O3".1:3142"
+	FTP="ftp://"$O1"."$O2"."$O3".1:3142"
 
 	# Normalmente o IP do AptCacher no ambiente KVM está apontado par o primeiro Ip disponivel da rede KVM
 	AC_NG=$O1"."$O2"."$O3".1"
-	nc -w 1 -v $AC_NG $CACHEPORT < /dev/null
+	nc -w 1 -v $AC_NG 3142 < /dev/null
 	if [ $? -eq 0 ] && [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
 		echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
 		echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
 		echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
 	fi
 else
-	# Se o host estiver na LAN do provedor, le a variavel APTCACHER definida em om.ips
-
+	# Se o host estiver na LAN do provedor, lê variaveis definidas em om.ips
 	# Define as variaveis para acessar o AptCacherNG conforme dados da conexão ativa obtidos em I_P
-	HTP="http://"$O1"."$O2"."$O3".1:"$CACHEPORT
-	FTP="ftp://"$O1"."$O2"."$O3".1:"$CACHEPORT
 
 	nc -w 1 -v $APTCACHER $CACHEPORT < /dev/null
 	if [ $? -eq 0 ]; then
-		echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
-		echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
-		echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::http::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' > /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::https::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::ftp::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
 	fi
 fi
 

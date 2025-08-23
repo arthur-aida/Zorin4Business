@@ -19,7 +19,7 @@
 # Compilado por arthur.aida@gmail.com
 # Arquivos correlacionados em https://drive.google.com/drive/folders/1JU3TpAYm3-7nUWTZ0rGMWjidQbHo_jak?usp=sharing
 
-echo "Chamada do script: "$(basename $0) "-----------------------------------------------------------------------------------------------------------"
+# echo "Chamada do script: "$(basename $0) "-----------------------------------------------------------------------------------------------------------"
 apt install flatpak nfs-common -y
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo

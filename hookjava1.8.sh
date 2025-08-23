@@ -23,7 +23,7 @@
 # Os links dos arquivos citados neste script podem ficar desatualizados. EM CASO DE ERROS PESQUISE O NOVO LINK E ATUALIZE NO SCRIPT.
 #
 # 
-echo "Chamada do script: "$(basename $0) "-----------------------------------------------------------------------------------------------------------"
+# echo "Chamada do script: "$(basename $0) "-----------------------------------------------------------------------------------------------------------"
 echo "[Desktop Entry]" > /usr/share/applications/icedtea-netx-javaws.desktop
 echo "Name=IcedTea Web Start" >> /usr/share/applications/icedtea-netx-javaws.desktop
 echo "GenericName=Java Web Start" >> /usr/share/applications/icedtea-netx-javaws.desktop 

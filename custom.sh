@@ -117,19 +117,19 @@ nome="epson-inkjet-printer-escpr"
 pacote=$(dpkg --get-selections | grep "$nome" )
 if [ ! -n "$pacote" ]; then
 	rm -f /tmp/epsonscan2-bundle.tar.gz
-	if [  -f $curdir/cache/epsonscan2-bundle.tar.gz ]; then 
-		cp -f $curdir/cache/epsonscan2-bundle.tar.gz /tmp/epsonscan2-bundle.tar.gz
+	if [  -f /tmp/cache/epsonscan2-bundle.tar.gz ]; then 
+		cp -f /tmp/cache/epsonscan2-bundle.tar.gz /tmp/epsonscan2-bundle.tar.gz
 	else
 		wget https://download3.ebz.epson.net/dsc/f/03/00/16/14/38/7b1780ace96e2c6033bbb667c7f3ed281e4e9f38/epsonscan2-bundle-6.7.70.0.x86_64.deb.tar.gz -P /tmp/ -O /tmp/epsonscan2-bundle.tar.gz
 	fi
-	if [  -f $curdir/cache/epson-inkjet-printer-escpr.deb ]; then 
-		cp -f $curdir/cache/epson-inkjet-printer-escpr.deb /tmp/epson-inkjet-printer-escpr.deb
+	if [  -f /tmp/cache/epson-inkjet-printer-escpr.deb ]; then 
+		cp -f /tmp/cache/epson-inkjet-printer-escpr.deb /tmp/epson-inkjet-printer-escpr.deb
 	else
 		wget https://download3.ebz.epson.net/dsc/f/03/00/16/65/04/32d8b35d3868ac14fe4f67e297e6ddf5aa2e27cf/epson-inkjet-printer-escpr2_1.2.26-1_amd64.deb -P /tmp/ -O /tmp/epson-inkjet-printer-escpr.deb
 	fi
 
-	if [  -f $curdir/cache/epson-printer-utility_1.1.3-1_amd64.deb ]; then 
-		cp -f $curdir/cache/epson-printer-utility_1.1.3-1_amd64.deb /tmp/epson-printer-utility_1.1.3-1_amd64.deb
+	if [  -f /tmp/cache/epson-printer-utility_1.1.3-1_amd64.deb ]; then 
+		cp -f /tmp/cache/epson-printer-utility_1.1.3-1_amd64.deb /tmp/epson-printer-utility_1.1.3-1_amd64.deb
 	else
 		wget https://download3.ebz.epson.net/dsc/f/03/00/15/43/23/b85f4cf2956db3dd768468b418b964045c047b2c/epson-printer-utility_1.1.3-1_amd64.deb -P /tmp/ -O /tmp/epson-printer-utility_1.1.3-1_amd64.deb
 	fi
@@ -275,8 +275,8 @@ if [ ! -n "$pacote" ]; then
 fi
 
 # Identifica se o pacote  esta em cache. Se não busca na internet para instalar ou atualizar
-if [  -f $curdir/cache/bleachbit*.deb ]; then 
-	cp -f $curdir/cache/bleachbit*.deb /tmp/bleachbit*.deb
+if [  -f /tmp/cache/bleachbit*.deb ]; then 
+	cp -f /tmp/cache/bleachbit*.deb /tmp/bleachbit*.deb
 else
 	# Variável que define a versão do sistema operacional a partir da variavel de ambiente 
 	VSO=$VERSION_CODENAME
@@ -361,4 +361,3 @@ exit
 	####	echo $f1
 	####fi
 ####done < /etc/passwd
-

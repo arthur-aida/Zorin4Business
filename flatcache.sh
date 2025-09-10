@@ -55,9 +55,9 @@ fi
 nc -w 1 -v $KVMIP 2049 < /dev/null 
 if [ $? -eq 0 ]; then
 	#usuariofp=`grep '^sudo:.*$' /etc/group | cut -d: -f4`
-	usuariofp="adminstrador"
+	#usuariofp="adminstrador"
 	#Pasta do usuário onde é compartilhado e armazenado o cache dos pacotes flatpak no servidor com endereco KVMIP
-	/bin/mount -t nfs $KVMIP:/home/$usuariofp/flatpakcache/ /mnt
+	/bin/mount -t nfs $KVMIP:/partimag/flatpakcache/ /mnt
 	# confirmação visual
 	ls -last /mnt
 

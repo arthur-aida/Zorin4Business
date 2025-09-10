@@ -217,8 +217,8 @@ fi
 nome="warsaw"
 pacote=$(dpkg --get-selections | grep "$nome" )
 if [ ! -n "$pacote" ]; then
-	if [ -f cache/cef.deb ]; then 
-		cp -f cache/cef.deb /tmp/cef.deb
+	if [ -f /tmp/cache/cef.deb ]; then 
+		cp -f /tmp/cache/cef.deb /tmp/cef.deb
 	else	
 		wget https://cloud.gastecnologia.com.br/cef/warsaw/install/GBPCEFwr64.deb -O /tmp/cef.deb
 	fi
@@ -239,8 +239,8 @@ if [  -f scripts4om.sh ]; then
 	chmod +x scripts4om.sh
 	sh -x scripts4om.sh 
 fi
-if [ -f cache/setup-deb-64.deb ]; then 
-	cp -f cache/setup-deb-64.deb /tmp/setup-deb-64.deb
+if [ -f /tmp/cache/setup-deb-64.deb ]; then 
+	cp -f /tmp/cache/setup-deb-64.deb /tmp/setup-deb-64.deb
 fi
 if [ ! -f /tmp/setup-deb-64.deb ]; then 
 	wget https://get.webpkiplugin.com/Downloads/1730900328577/setup-deb-64  -O /tmp/setup-deb-64.deb  

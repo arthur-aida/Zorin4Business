@@ -72,9 +72,12 @@ echo; echo
 #  LISTAGEM DE SOFTWARE DA INSTALAÇÃO ORIGINAL
 mkdir -p /etc/skel/custom/
 grep -i "install" /var/log/dpkg.log > /etc/skel/custom/lista_software.txt.ori
-cp -f cache/* /tmp/
+# INSTALA O SUPORTE AO FLATPAK E ATIVA O CACHE
+if [ -f flatcache.sh ]; then
+	sh -x flatcache.sh
+fi
 
-#  ARMAZENA OS SCRIPTS PARA AUDITORIA
+#  ARMAZENA OS SCRIPTS ORIGINAIS PARA AUDITORIA
 zip -v scriptscustom.zip  *.sh *.ips crontab hosts spice zorin* export*  >/dev/null
 
 #if [ ! -f /etc/apt/sourceslist.ori.br ]; then

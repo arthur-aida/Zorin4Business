@@ -85,7 +85,10 @@ if [ "$VerWine" != "wine-4.0.4" ] && [ ! -z "$siscofis" ] &&  [ "$PRETTY_NAME" =
 fi
 
 # REATIVA O ACNG PÓS IMPORTAÇÃO DAS CHAVES  
-sh -x $curdir/acngonoff.sh 
+if [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
+	sh -x $curdir/acngonoff.sh 
+fi
+
 
 # REATUALIZA O SISTEMA OPERACIONAL COM O ACNG
 apt update && apt full-upgrade -y ; apt --fix-broken install -y; apt autoremove -y

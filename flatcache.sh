@@ -93,3 +93,6 @@ if  [ $site != "https://www.google.com.br" ]; then
 	flatpak uninstall  --system org.onlyoffice.desktopeditors -y
 fi
 
+/bin/mount -t nfs $KVMIP:/partimag/cache/ /mnt/cache/
+cp -f /mnt/cache/* /tmp/
+

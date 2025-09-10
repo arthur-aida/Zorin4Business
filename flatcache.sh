@@ -96,4 +96,4 @@ if [ ! -d /tmp/cache/  ]; then
 	mkdir /tmp/cache/
 fi
 /bin/mount -t nfs $KVMIP:/partimag/cache/ /tmp/cache/
-cp -f /mnt/cache/* /tmp/
+cp -f /tmp/cache/* /tmp/

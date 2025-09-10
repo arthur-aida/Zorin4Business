@@ -99,14 +99,14 @@ if [ ! -f /home/$USERADM/"Área de Trabalho"/7-AdicionanovousuarioComum.pdf ]; t
 fi
 cp -f *.pdf /home/$USERADM/"Área de Trabalho"/  
 chattr +i   /home/$USERADM/"Área de Trabalho"/*.pdf
-cp -f cache/*.png /home/$USERADM/"Área de Trabalho"/  
+cp -f /tmp/cache/*.png /home/$USERADM/"Área de Trabalho"/  
 chattr +i   /home/$USERADM/"Área de Trabalho"/Ass*.png
 
 if [ ! -z "$siscofis" ]; then
 	if [ ! -f /etc/kes-lnx.zip ]; then
 		# COPIA A SOLUÇÃO DE SEGURANÇA CORPORATIVA PARA INSTALAÇÃO AUTOMATICA VIA /etc/aptcacher.sh
-		if [ -f /home/$USERADM/instalakesl.sh ] || [ -f /home/$USERADM/cache/kes-lnx.zip ]; then
-			cp -f /home/$USERADM/cache/kes-lnx.zip /etc/
+		if [ -f /home/$USERADM/instalakesl.sh ] || [ -f /tmp/cache/kes-lnx.zip ]; then
+			cp -f /tmp/cache/kes-lnx.zip /etc/
 			cp -f /home/$USERADM/instalakesl.sh /etc/
 			chmod +x /etc/instalakesl.sh
 		fi
@@ -255,8 +255,8 @@ if [ ! -z "$siscofis" ]; then
 		cp -f cfgwine.sh /etc/cfgwine.sh
 		chmod +x /etc/cfgwine.sh
 	fi
-	if [ -f $curdir/cache/wine.zip ] && [ ! -f /etc/wine.zip ]; then 
-		cp -f $curdir/cache/wine.zip /etc/wine.zip
+	if [ -f /tmp/cache/wine.zip ] && [ ! -f /etc/wine.zip ]; then 
+		cp -f /tmp/cache/wine.zip /etc/wine.zip
 	fi
 fi
 
@@ -368,4 +368,3 @@ ln -sf /bin/CARREGAdriverTOKEN.sh /bin/carregadrivertokens
 ln -sf /bin/CARREGAdriverTOKEN.sh /bin/CARREGAdriverTOKEN.sh
 ln -sf /bin/CARREGAdriverTOKEN.sh /bin/carregadrivertoken.sh
 ln -sf /bin/CARREGAdriverTOKEN.sh /bin/carregadrivertokens.sh
-

@@ -92,7 +92,8 @@ if  [ $site != "https://www.google.com.br" ]; then
 	# remove software domestico para adequação ao uso corporativo 
 	flatpak uninstall  --system org.onlyoffice.desktopeditors -y
 fi
-
-/bin/mount -t nfs $KVMIP:/partimag/cache/ /mnt/cache/
+if [ ! -d /tmp/cache/  ]; then
+	mkdir /tmp/cache/
+fi
+/bin/mount -t nfs $KVMIP:/partimag/cache/ /tmp/cache/
 cp -f /mnt/cache/* /tmp/
-

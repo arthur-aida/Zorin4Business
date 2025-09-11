@@ -42,7 +42,7 @@ if [ "$#" = "0" ]; then
 fi
 
 # TESTA SE FOI PASSADO ALGUM PARAMETRO INVÁLIDO
-if [ "$1" != "1" ] && [ "$1" != "2" ] && [ "$1" != "3" ]; then
+if [ "$1" != "1" ] && [ "$1" != "2" ] && [ "$1" != "3" ] && [ "$1" != "9" ] ; then
 	clear
 	echo "		Você executou# bash $0 $1 "
 	echo 
@@ -111,11 +111,16 @@ apt-get reinstall fwupd -y
 apt install --assume-yes libappindicator1 openssh-server sshfs xterm
 dpkg --configure -a 
 apt -f install -y 
-
-# INSTALA O SUPORTE AO FLATPAK E ATIVA O CACHE
-if [ -f flatcache.sh ]; then
-	sh -x flatcache.sh
+apt full-upgrade -y
+apt autoremove
+if [ "$1" = "9" ]; then
+	echo "		->Atualiza o SNAPSHOT para gerar uma nova imagem base com o Clonezilla com  bash $0 $1"
+	exit
 fi
+# INSTALA O SUPORTE AO FLATPAK E ATIVA O CACHE
+#if [ -f flatcache.sh ]; then
+#	sh -x flatcache.sh
+#fi
 
 curl -fsS https://dl.brave.com/install.sh | sh
 

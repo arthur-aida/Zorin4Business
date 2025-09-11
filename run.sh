@@ -72,10 +72,6 @@ echo; echo
 #  LISTAGEM DE SOFTWARE DA INSTALAÇÃO ORIGINAL
 mkdir -p /etc/skel/custom/
 grep -i "install" /var/log/dpkg.log > /etc/skel/custom/lista_software.txt.ori
-# INSTALA O SUPORTE AO FLATPAK E ATIVA O CACHE
-if [ -f flatcache.sh ]; then
-	sh -x flatcache.sh
-fi
 
 #  ARMAZENA OS SCRIPTS ORIGINAIS PARA AUDITORIA
 zip -v scriptscustom.zip  *.sh *.ips crontab hosts spice zorin* export*  >/dev/null
@@ -104,6 +100,7 @@ fi
 gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/oracle-jdk11-installer.gpg --keyserver keyserver.ubuntu.com --recv-keys EA8CACC073C3DB2A
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-jdk11-installer.gpg] https://ppa.launchpadcontent.net/linuxuprising/java/ubuntu jammy main" | sudo tee /etc/apt/sources.list.d/oracle-jdk11-installer.list > /dev/null
 
+# Ativa o cache
 sh -x acngonoff.sh
 apt purge 
 apt update
@@ -113,8 +110,12 @@ dpkg --configure -a
 apt -f install -y 
 apt full-upgrade -y
 apt autoremove
+# INSTALA O SUPORTE AO FLATPAK E ATIVA O CACHE no NFS
+if [ -f flatcache.sh ]; then
+	sh -x flatcache.sh
+fi
 if [ "$1" = "9" ]; then
-	echo "		->Atualiza o SNAPSHOT para gerar uma nova imagem base com o Clonezilla com  bash $0 $1"
+	echo "->Atualiza a imagem base para gerar um ISO auto instalável via Clonezilla, no hardware real configurado pelo script prepsrvnfsacng.sh"
 	exit
 fi
 # INSTALA O SUPORTE AO FLATPAK E ATIVA O CACHE

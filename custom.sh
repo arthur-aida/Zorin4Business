@@ -298,7 +298,7 @@ else
 	fi
 fi
 dpkg -i --force-all /tmp/bleachbit*.deb
-rm /tmp/bleachbit_*.deb
+rm /tmp/bleachbit*.deb
 
 # https://www.vivaolinux.com.br/topico/Sed-Awk-ER-Manipulacao-de-Textos-Strings/Como-inserir-um-texto-num-lugar-especifico-de-um-aquivo-pela-linha-de-comando
 # APLICA-SE SOMENTE AO SERVIDOR PULSE AUDIO. É IGNORADO NOUTRAS SERVIDORES DE SOM

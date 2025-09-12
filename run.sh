@@ -109,7 +109,7 @@ apt install --assume-yes libappindicator1 openssh-server sshfs xterm
 dpkg --configure -a 
 apt -f install -y 
 apt full-upgrade -y
-apt autoremove
+apt autoremove -y
 # INSTALA O SUPORTE AO FLATPAK E ATIVA O CACHE no NFS
 if [ -f flatcache.sh ]; then
 	sh -x flatcache.sh

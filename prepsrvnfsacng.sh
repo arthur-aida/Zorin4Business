@@ -40,11 +40,10 @@ fi
 chown -R nobody:nogroup /partimag
 chmod -R 775            /partimag
 setfacl -m d:u:65534:rwx,d:g:65534:rwx,d:m::rx,d:o::rx  /partimag/
-exportfs -a; exportfs -r
 
-# Definição das configurações do NFS
+# Definição das configurações das LANs com acesso via NFS
 echo "" > /etc/exports
-if [ $GW!=$GW_K ]; then
+if [ ! -z $GW ]; then
 	# Define os 3 octetos iniciais da rede quando for executado no host REAL com GW da LAN diferente do gateway do KVM
 	O1=`echo $GW | cut -d . -f 1`
 	O2=`echo $GW | cut -d . -f 2`
@@ -63,6 +62,8 @@ if [ ! -z $I_P ]; then
 	# Configura o compartilhamento com a subrede do KVM como escrita
 	echo "/partimag $LA_N(rw,sync,no_subtree_check)" >> /etc/exports
 fi
+exportfs -a; exportfs -r
+
 apt update
 apt install fwupd apt-cacher-ng net-tools --reinstall --assume-yes 
 # Configurações para que qualquer rede do KVM-Linux acesse o APT-cacher-NG

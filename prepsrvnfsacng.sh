@@ -19,7 +19,6 @@
 # Partes deste script são adaptações de fontes disponíveis na internet. Objetivo preparar S.O. sabores ?BUNTU e DEBIAN para uso corporativo
 # Compilado por arthur.aida@gmail.com
 if [ ! -f /etc/om.ips ]; then
-	cp -f om.ips /etc/
 	if [ -f hgu.ips ]; then
 		cp -f hgu.ips /etc/om.ips
 	else
@@ -28,66 +27,119 @@ if [ ! -f /etc/om.ips ]; then
 fi
 . /etc/om.ips
 
-apt install apt-cacher-ng -y
-systemctl start apt-cacher-ng && systemctl enable apt-cacher-ng
-sh acng.sh
+apt update
+apt-get install  --reinstall --assume-yes apt-cacher-ng net-tools qemu-system-x86-64 qemu qemu-kvm qemu-utils virt-manager virt-viewer libvirt-daemon spice-vdagent spice-webdavd nfs-kernel-server libappindicator1 openssh-sftp-server openssh-server sshfs xterm flatpak nfs-common
 
-nome="nfs-kernel-server"
-apt-get install --assume-yes $nome
-apt-get install --assume-yes qemu-system-x86-64 qemu qemu-kvm qemu-utils virt-manager virt-viewer libvirt-daemon spice-vdagent spice-webdavd
+systemctl restart libvirtd && systemctl restart virtqemud.socket && systemctl restart libvirtd.socket && systemctl status libvirtd
+systemctl restart libvirtd && systemctl restart virtqemud.socket && systemctl restart libvirtd.socket && systemctl status libvirtd
 
-nome="openssh-sftp-server"
-pacote=$(dpkg --get-selections | grep "$nome" )
-if [ -n "$pacote" ]; then
-     	echo "PACOTE  $nome JÁ INSTALADO"
-else
-	apt-get install --assume-yes openssh-sftp-server
-fi
-
-					# Recupera o gateway default para verificar o ambiente de execução
+# Recupera o gateway default para verificar o ambiente de execução
 GW=`route -n | awk '$1 == "0.0.0.0" {print $2}'`
 
-# Recupera o endereço IP servidor KVM do host, SFC
-I_P=`ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1`
-O1=`echo $I_P | cut -d . -f 1`
-O2=`echo $I_P | cut -d . -f 2`
-O3=`echo $I_P | cut -d . -f 3`
-O4="1"
-GW_K=$O1"."$O2"."$O3"."$O4
-
-# Definição das configurações do NFS 
-echo "" > /etc/exports
-if [ $GW!=$GW_K ]; then 
-	# Define os 3 octetos iniciais da rede quando for executado no host REAL com GW da LAN diferente do gateway do KVM  
-	O1=`echo $GW | cut -d . -f 1`
-	O2=`echo $GW | cut -d . -f 2`
-	O3=`echo $GW | cut -d . -f 3`
-	LA_N=$O1"."$O2"."$O3".0/22"
-	#Configura o compartilhamento com a subrede da LAN somente leitura
-	echo "/partimag $LA_N(ro,sync,no_subtree_check)" >> /etc/exports
-fi
-
-if [ $GW_K = $I_P ]; then 
-	# Define os 3 octetos iniciais da rede do KVM-Linux quando for executado no host REAL com GW_K igual ao IP do KVM server  
-	O1=`echo $I_P | cut -d . -f 1`
-	O2=`echo $I_P | cut -d . -f 2`
-	O3=`echo $I_P | cut -d . -f 3`
-	LA_N=$O1"."$O2"."$O3".0/24"
-	# Configura o compartilhamento com a subrede do KVM como escrita
-	echo "/partimag $LA_N(rw,sync,no_subtree_check)" >> /etc/exports
-fi
+# Recupera o endereço IP do servidor KVM-linux do host, SFC
+I_P=`ip addr show |grep "virbr0" |grep -v dynamic | grep "inet " | head -1|cut -d" " -f6`
 
 if [ ! -d /partimag ]; then
 	mkdir -p /partimag
 	mkdir -p /partimag/cache
-	mkdir -p /partimag/flatcache
+	mkdir -p /partimag/flatpakcache
 fi
+
+# Definição das redes permitidas do NFS
+echo "" > /etc/exports
+# Define os 3 octetos iniciais do gateway da rede
+OG1=`echo $GW | cut -d . -f 1`
+OG2=`echo $GW | cut -d . -f 2`
+OG3=`echo $GW | cut -d . -f 3`
+LA_N=$OG1"."$OG2"."$OG3".0/22"
+
+# Habilita o compartilhamento com a rede da LAN somente leitura
+echo "/partimag $LA_N(ro,sync,no_subtree_check)" >> /etc/exports
+
+# Define os 3 octetos iniciais da rede do KVM-Linux 
+if [ ! -z $I_P ]; then
+	OK1=`echo $I_P | cut -d . -f 1`
+	OK2=`echo $I_P | cut -d . -f 2`
+	OK3=`echo $I_P | cut -d . -f 3`
+	LA_N=$OK1"."$OK2"."$OK3".0/24"
+fi
+
+# Habilita o compartilhamento com a subrede do KVM como escrita
+echo "/partimag $LA_N(rw,sync,no_subtree_check)" >> /etc/exports
+
+# Configurações para que qualquer rede do KVM-Linux acesse o APT-cacher-NG
+echo 'CacheDir: /var/cache/apt-cacher-ng' > /etc/apt-cacher-ng/acng.conf
+echo 'LogDir: /var/log/apt-cacher-ng' >> /etc/apt-cacher-ng/acng.conf
+echo 'SupportDir: /usr/lib/apt-cacher-ng' >> /etc/apt-cacher-ng/acng.conf
+echo 'Port:3142' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-debrep: file:deb_mirror*.gz /debian ; file:backends_debian' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-uburep: file:ubuntu_mirrors /ubuntu' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-klxrep: file:kali_mirrors /kali' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-cygwin: file:cygwin_mirrors /cygwin' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-sfnet:  file:sfnet_mirrors' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-alxrep: file:archlx_mirrors /archlinux # ; file:backend_archlx' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-fedora: file:fedora_mirrors' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-epel:   file:epel_mirrors' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-slrep:  file:sl_mirrors' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-gentoo: file:gentoo_mirrors.gz /gentoo' >> /etc/apt-cacher-ng/acng.conf
+echo 'Remap-secdeb: security.debian.org security.debian.org/debian-security deb.debian.org/debian-security /debian-security cdn-fastly.deb.debian.org/debian-security' >> /etc/apt-cacher-ng/acng.conf
+echo 'ReportPage: acng-report.html' >> /etc/apt-cacher-ng/acng.conf
+echo 'ExThreshold: 4' >> /etc/apt-cacher-ng/acng.conf
+echo 'FollowIndexFileRemoval: 1' >> /etc/apt-cacher-ng/acng.conf
+
+# Define as variaveis para acessar o AptCacherNG na porta padrão no host do KVM, conforme dados da conexão ativa obtidos em I_P
+HTP="http://"$OK1"."$OK2"."$OK3".1:3142"
+FTP="ftp://"$OK1"."$OK2"."$OK3".1:3142"
+
+# Normalmente o IP do AptCacher no ambiente KVM do HW real está definido para o primeiro IP disponivel da rede KVM-linux server
+AC_NG=$OK1"."$OK2"."$OK3".1" # Em teoria = $GW
+if [ $OG1 = $OK1 ] && [ $OG2 = $OK2  ] && [ $OG3 = $OK3 ] ; then
+	# Se o os 3 octetos são identicos deve ser uma VM executada dentro do KVM-linux
+
+	nc -w 1 -v $AC_NG 3142 < /dev/null
+	if [ $? -eq 0 ] && [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
+		echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+	fi
+else
+	# Define as variaveis para acessar o AptCacherNG, conforme dados da conexão ativa obtidos em om.ips
+
+	nc -w 1 -v $APTCACHER $CACHEPORT < /dev/null
+	if [ $? -eq 0 ]; then
+		echo 'Acquire::http::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' > /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::https::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::ftp::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
+	else
+		AC_NG=$OK1"."$OK2"."$OK3".1"
+		if [ $GW != $AC_NG ]; then
+			echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
+			echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+			echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+		fi
+	
+	fi
+
+fi
+
+# Copia arqquivos previamente baixados em outra instalação para acelerar a disponibilidade do cache
+if [ -d /media/administrador/toshiba/partimag/apt-cacher-ng ]; then
+	cp -f -R /media/administrador/toshiba/partimag/apt-cacher-ng/* /var/cache/apt-cacher-ng/
+	chown -R apt-cacher-ng:apt-cacher-ng /var/cache/apt-cacher-ng
+fi
+systemctl start apt-cacher-ng && systemctl enable apt-cacher-ng
+
+if [ -d /media/administrador/toshiba/partimag/cache ]; then
+	cp -f -R /media/administrador/toshiba/partimag/cache/* /partimag/cache/
+fi
+
+if [ -d /media/administrador/toshiba/partimag/flatpakcache ]; then
+	cp -f -R /media/administrador/toshiba/partimag/flatpakcache /partimag/
+fi
+
 chown -R nobody:nogroup /partimag
-chmod 775 /partimag
-
-#https://unix.stackexchange.com/questions/646224/nfs-share-umask
+chmod -R 775            /partimag
 setfacl -m d:u:65534:rwx,d:g:65534:rwx,d:m::rx,d:o::rx  /partimag/
-
 exportfs -a; exportfs -r
 
-sh flatcache.sh
+apt full-upgrade -y

@@ -52,7 +52,6 @@ OG1=`echo $GW | cut -d . -f 1`
 OG2=`echo $GW | cut -d . -f 2`
 OG3=`echo $GW | cut -d . -f 3`
 LA_N=$OG1"."$OG2"."$OG3".0/22"
-
 # Habilita o compartilhamento com a rede da LAN somente leitura
 echo "/partimag $LA_N(ro,sync,no_subtree_check)" >> /etc/exports
 
@@ -62,10 +61,41 @@ if [ ! -z $I_P ]; then
 	OK2=`echo $I_P | cut -d . -f 2`
 	OK3=`echo $I_P | cut -d . -f 3`
 	LA_N=$OK1"."$OK2"."$OK3".0/24"
+	# Habilita o compartilhamento com a subrede do KVM como escrita
+	echo "/partimag $LA_N(rw,sync,no_subtree_check)" >> /etc/exports
+	# Define as variaveis para acessar o AptCacherNG na porta padrão no host do KVM, conforme dados da conexão ativa obtidos em I_P
+	HTP="http://"$OK1"."$OK2"."$OK3".1:3142"
+	FTP="ftp://"$OK1"."$OK2"."$OK3".1:3142"
+	
+	# Normalmente o IP do AptCacher no ambiente KVM do HW real está definido para o primeiro IP disponivel da rede KVM-linux server
+	AC_NG=$OK1"."$OK2"."$OK3".1" # Em teoria = $GW
+	if [ $OG1 = $OK1 ] && [ $OG2 = $OK2  ] && [ $OG3 = $OK3 ] ; then
+		# Se o os 3 octetos são identicos deve ser uma VM executada dentro do KVM-linux
+	
+		nc -w 1 -v $AC_NG 3142 < /dev/null
+		if [ $? -eq 0 ] && [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
+			echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
+			echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+			echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+		fi
+	else
+		# Define as variaveis para acessar o AptCacherNG, conforme dados da conexão ativa obtidos em om.ips
+	
+		nc -w 1 -v $APTCACHER $CACHEPORT < /dev/null
+		if [ $? -eq 0 ]; then
+			echo 'Acquire::http::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' > /etc/apt/apt.conf.d/00aptproxy
+			echo 'Acquire::https::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
+			echo 'Acquire::ftp::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
+		else
+			AC_NG=$OK1"."$OK2"."$OK3".1"
+			if [ $GW != $AC_NG ]; then
+				echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
+				echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+				echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+			fi
+		fi
+	fi
 fi
-
-# Habilita o compartilhamento com a subrede do KVM como escrita
-echo "/partimag $LA_N(rw,sync,no_subtree_check)" >> /etc/exports
 
 # Configurações para que qualquer rede do KVM-Linux acesse o APT-cacher-NG
 echo 'CacheDir: /var/cache/apt-cacher-ng' > /etc/apt-cacher-ng/acng.conf
@@ -86,41 +116,6 @@ echo 'Remap-secdeb: security.debian.org security.debian.org/debian-security deb.
 echo 'ReportPage: acng-report.html' >> /etc/apt-cacher-ng/acng.conf
 echo 'ExThreshold: 4' >> /etc/apt-cacher-ng/acng.conf
 echo 'FollowIndexFileRemoval: 1' >> /etc/apt-cacher-ng/acng.conf
-
-# Define as variaveis para acessar o AptCacherNG na porta padrão no host do KVM, conforme dados da conexão ativa obtidos em I_P
-HTP="http://"$OK1"."$OK2"."$OK3".1:3142"
-FTP="ftp://"$OK1"."$OK2"."$OK3".1:3142"
-
-# Normalmente o IP do AptCacher no ambiente KVM do HW real está definido para o primeiro IP disponivel da rede KVM-linux server
-AC_NG=$OK1"."$OK2"."$OK3".1" # Em teoria = $GW
-if [ $OG1 = $OK1 ] && [ $OG2 = $OK2  ] && [ $OG3 = $OK3 ] ; then
-	# Se o os 3 octetos são identicos deve ser uma VM executada dentro do KVM-linux
-
-	nc -w 1 -v $AC_NG 3142 < /dev/null
-	if [ $? -eq 0 ] && [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
-		echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
-		echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
-		echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
-	fi
-else
-	# Define as variaveis para acessar o AptCacherNG, conforme dados da conexão ativa obtidos em om.ips
-
-	nc -w 1 -v $APTCACHER $CACHEPORT < /dev/null
-	if [ $? -eq 0 ]; then
-		echo 'Acquire::http::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' > /etc/apt/apt.conf.d/00aptproxy
-		echo 'Acquire::https::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
-		echo 'Acquire::ftp::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
-	else
-		AC_NG=$OK1"."$OK2"."$OK3".1"
-		if [ $GW != $AC_NG ]; then
-			echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
-			echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
-			echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
-		fi
-	
-	fi
-
-fi
 
 # Copia arqquivos previamente baixados em outra instalação para acelerar a disponibilidade do cache
 if [ -d /media/administrador/toshiba/partimag/apt-cacher-ng ]; then

@@ -87,7 +87,6 @@ if [ ! -z $I_P ]; then
 			echo 'Acquire::https::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
 			echo 'Acquire::ftp::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
 		else
-			AC_NG=$OK1"."$OK2"."$OK3".1"
 			if [ $GW != $AC_NG ]; then
 				echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
 				echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy

@@ -228,7 +228,7 @@ if [ ! -n "$pacote" ]; then
 	else	
 		wget https://cloud.gastecnologia.com.br/cef/warsaw/install/GBPCEFwr64.deb -O /tmp/cef.deb
 	fi
-	dpkg -i /tmp/cef.deb
+	dpkg -i /tmp/cef.deb && rm -f /tmp/cef.deb
 
 	#wget https://cloud.gastecnologia.com.br/bb/downloads/ws/warsaw_setup64.deb  -O /tmp/bb.deb
 	# dpkg -i /tmp/bb.deb
@@ -252,7 +252,7 @@ if [ ! -f /tmp/setup-deb-64.deb ]; then
 	wget https://get.webpkiplugin.com/Downloads/1730900328577/setup-deb-64  -O /tmp/setup-deb-64.deb  
 fi
 
-dpkg -i /tmp/setup-deb-64.deb 
+dpkg -i /tmp/setup-deb-64.deb && rm -f /tmp/setup-deb-64.deb
 apt install brave-browser zorin-connect -y
 
 # O script TokenDXSafe.sh foi desativado por necessitar de interação. DXSafeMiddleware.sh é autônomo.
@@ -273,9 +273,6 @@ umount /mnt
 rm -Rf /mnt/ 
 mkdir /mnt/
 chmod 755 /mnt/
-if [ -d $curdir/cache/ ]; then 
-	rm -rf $curdir/cache/
-fi
 
 # Redefine as imagens de fundo para o Desktop corporativo substituindo o padrão
 # Renomeia as imagens originais e copia uma nova imagem com o nome da original em /usr/share/gnome-background-properties/ 

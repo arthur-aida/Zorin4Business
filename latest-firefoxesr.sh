@@ -91,8 +91,8 @@ if [ ! -d /opt/ ]; then
 fi
 
 FIREFOXPKG="https://download.mozilla.org/?product=firefox-${VERSION}&os=linux${LIBDIRSUFFIX}&lang=${FFLANG}"
-wget "$FIREFOXPKG" -O /tmp/firefox-esr.tar.bz2
-tar -jxvf /tmp/firefox-esr.tar.bz2 --overwrite-dir -C /opt
+wget "$FIREFOXPKG" -O /tmp/firefox-esr.tar.xz
+tar -xf /tmp/firefox-esr.tar.xz --overwrite-dir  -C /opt
 ln -sf /opt/firefox/firefox /usr/bin/firefox-esr
 
 #  RECRIA O LINK PARA A BIBLIOTECA DE CARREGAMENTO DINÂMICO DOS CERTIFICADOS PARA O FIREFOX-ESR

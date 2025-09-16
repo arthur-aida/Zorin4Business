@@ -118,16 +118,19 @@ echo 'FollowIndexFileRemoval: 1' >> /etc/apt-cacher-ng/acng.conf
 
 # Copia arqquivos previamente baixados em outra instalação para acelerar a disponibilidade do cache
 if [ -d /media/administrador/toshiba/partimag/apt-cacher-ng ]; then
+	echo "apt-cacher-ng"
 	cp -f -R /media/administrador/toshiba/partimag/apt-cacher-ng/* /var/cache/apt-cacher-ng/
 	chown -R apt-cacher-ng:apt-cacher-ng /var/cache/apt-cacher-ng
 fi
 systemctl start apt-cacher-ng && systemctl enable apt-cacher-ng
 
 if [ -d /media/administrador/toshiba/partimag/cache ]; then
+	echo "copiando arquivos baixados"
 	cp -f -R /media/administrador/toshiba/partimag/cache/* /partimag/cache/
 fi
 
 if [ -d /media/administrador/toshiba/partimag/flatpakcache ]; then
+	echo "copiando cache flatpak"
 	cp -f -R /media/administrador/toshiba/partimag/flatpakcache /partimag/
 fi
 

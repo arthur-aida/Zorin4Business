@@ -24,42 +24,47 @@ apt install flatpak nfs-common -y
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-if [ -f om.ips  ]; then
-	. ./om.ips
-else
+if [ ! -f /etc/om.ips  ]; then
+	cp -f hgu.ips /etc/om.ips 
 	. /etc/om.ips
 fi
-# recupera o endereço IP local
+
+KVMIP=`ip addr show |grep "virbr0" |grep -v dynamic | grep "inet " | head -1|cut -d" " -f6`
 HOSTIP=`ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1`
-I_P=$HOSTIP
-
-#extrai os 3 PRIMEIROS OCTETOS do endereço IP
-O1=`echo $I_P | cut -d . -f 1`
-O2=`echo $I_P | cut -d . -f 2`
-O3=`echo $I_P | cut -d . -f 3`
-
-# define o NETWORK com base nos OCTETOS
-LA_N=$O1"."$O2"."$O3".0/24"
-
-KVM122="192.168.122.0/24"
-KVM123="192.168.123.0/24"
-
-if [ $LA_N = $KVM122 ]  ; then
-	KVMIP=$O1"."$O2"."$O3".1"
+if [ ! -z $KVMIP ]; then
+	# Extrai os OCTETOS do endereço/mask para remontar o IP
+	OI1=`echo $KVMIP | cut -d . -f 1`
+	OI2=`echo $KVMIP | cut -d . -f 2`
+	OI3=`echo $KVMIP | cut -d . -f 3`
+else
+	if [ ! -z $HOSTIP ]; then
+		# Extrai os OCTETOS do endereço/mask para remontar o IP
+		OI1=`echo $HOSTIP | cut -d . -f 1`
+		OI2=`echo $HOSTIP | cut -d . -f 2`
+		OI3=`echo $HOSTIP | cut -d . -f 3`
+	else
+		zenity   --warning --text="FALHA! O AMBIENTE PARA CUSTOMIZAÇÃO DE ISOS E QUE USA O APT-CACHER-NG NÃO ESTA INSTALADO!" --width=550 --height=200
+		# Remove configuração anterior do proxy 
+		if [ -f /etc/apt/apt.conf.d/00aptproxy ]; then
+			rm -f /etc/apt/apt.conf.d/00aptproxy
+		fi
+		exit
+	fi
 fi
-if [ $LA_N = $KVM123 ]  ; then
-	KVMIP=$O1"."$O2"."$O3".1"
-fi
 
-# TESTA SE O SERVIDOR NFS ESTÁ ATIVO
-nc -w 1 -v $KVMIP 2049 < /dev/null 
+NFS_S=$OI1"."$OI2"."$OI3".1"
+nc -w 1 -v $NFS_S 2049 < /dev/null # TESTA SE O SERVIDOR NFS ESTÁ ATIVO
 if [ $? -eq 0 ]; then
 	#usuariofp=`grep '^sudo:.*$' /etc/group | cut -d: -f4`
-	#usuariofp="adminstrador"
 	#Pasta do usuário onde é compartilhado e armazenado o cache dos pacotes flatpak no servidor com endereco KVMIP
-	/bin/mount -t nfs $KVMIP:/partimag/flatpakcache/ /mnt
+	/bin/mount -t nfs $NFS_S:/partimag/flatpakcache/ /mnt
 	# confirmação visual
 	ls -last /mnt
+
+	if [ ! -d /tmp/cache/  ]; then
+		mkdir /tmp/cache/
+	fi
+	/bin/mount -t nfs $NFS_S:/partimag/cache/ /tmp/cache/
 
 	# redefine o link original do cache
 	flatpak remote-modify --collection-id=org.flathub.Stable flathub
@@ -81,8 +86,7 @@ else
 	flatpak install flathub app/com.google.Chrome app/com.microsoft.Edge org.keepassxc.KeePassXC app/com.obsproject.Studio io.github.nroduit.Weasis app/br.app.pw3270.terminal app/org.jitsi.jitsi-meet org.onlyoffice.desktopeditors -y
 fi
 
-# a variavel site está definida no arquivo om.ips e dá diretivas durante a customização
-echo $site
+# Se a variavel site está definida no arquivo om.ips, definir-se-á diretivas durante a customização
 if  [ $site = "https://www.google.com.br" ]; then
 	# remove software corporativo para adequação ao uso domestico 
 	flatpak uninstall --system app/br.app.pw3270.terminal io.github.nroduit.Weasis -y
@@ -92,8 +96,5 @@ if  [ $site != "https://www.google.com.br" ]; then
 	# remove software domestico para adequação ao uso corporativo 
 	flatpak uninstall  --system org.onlyoffice.desktopeditors -y
 fi
-if [ ! -d /tmp/cache/  ]; then
-	mkdir /tmp/cache/
-fi
-/bin/mount -t nfs $KVMIP:/partimag/cache/ /tmp/cache/
-cp -f /tmp/cache/* /tmp/
+
+

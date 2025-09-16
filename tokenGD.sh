@@ -26,9 +26,6 @@
 # https://github.com/LudovicRousseau/CCID"
 # https://diadialinux.wordpress.com/2021/03/30/instalacao-do-token-starsign-gd-no-ubuntu-20-04-e-18-04/"
 
-#echo "Chamada do script: "$(basename $0) "-----------------------------------------------------------------------------------------------------------"
-rm  /tmp/*.deb
-
 #  CARREGA VARIAVEIS DO SO 
 . /etc/os-release
 

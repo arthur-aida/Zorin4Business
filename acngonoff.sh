@@ -13,72 +13,74 @@
 #  a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
 #  Licença Pública Geral GNU para maiores detalhes.
 #-------------------------------------------------------------------------------------------------------------------------------
-# Script acionado pelo run.sh. Ativa o APTCACHER-NG nos possíveis endereços onde possa estar disponível. 
+# Script que ativa o APTCACHER-NG nos possíveis endereços onde possa estar disponível. 
 #-------------------------------------------------------------------------------------------------------------------------------
 # Partes deste script são adaptações de fontes disponíveis na internet. Objetivo preparar S.O. sabores ?BUNTU e DEBIAN para uso corporativo
 # Compilado por arthur.aida@gmail.com
 # Arquivos correlacionados em https://drive.google.com/drive/folders/1JU3TpAYm3-7nUWTZ0rGMWjidQbHo_jak?usp=sharing
-#
-#echo "Chamada do script: "$(basename $0) "-----------------------------------------------------------------------------------------------------------"
-if [ -f /etc/om.ips  ]; then
+
+if [ ! -f /etc/om.ips  ]; then
+	cp -f hgu.ips /etc/om.ips 
 	. /etc/om.ips
 fi
-# Variavel que armazena o IP recuperado da conexão ativa
-I_P=`ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1`
 
-# Variaveis que define os três primeiros octetos dinamicamente de um endereço IP a partir de I_P
-O1=`echo $I_P | cut -d . -f 1`
-O2=`echo $I_P | cut -d . -f 2`
-O3=`echo $I_P | cut -d . -f 3`
-
-# O quarto e último octeto são variáveis com conteúdo fixos assim como o classe da rede
-O4="0"
-CLASSE="24"
-
-# Redefine a variavel CLASSE se hostsallow2="sshd : 10.XX.YYY.0/ZZ" existir e for lido de om.ips
-nc -w 1 -v $APTCACHER $CACHEPORT < /dev/null
-if [ $? -eq 0 ]; then
-	CLASSE=`echo $hostsallow2 | cut --delimiter=/ -f2`
+apt install net-tools -y
+# Recupera o endereço IP/NETMASK
+KVMIP=`ip addr show |grep "virbr0" |grep -v dynamic | grep "inet " | head -1|cut -d" " -f6`
+HOSTIP=`ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1`
+if [ ! -z $KVMIP ]; then
+	# Extrai os OCTETOS do endereço/mask para remontar o IP
+	OI1=`echo $KVMIP | cut -d . -f 1`
+	OI2=`echo $KVMIP | cut -d . -f 2`
+	OI3=`echo $KVMIP | cut -d . -f 3`
+else
+	if [ ! -z $HOSTIP ]; then
+		# Extrai os OCTETOS do endereço/mask para remontar o IP
+		OI1=`echo $HOSTIP | cut -d . -f 1`
+		OI2=`echo $HOSTIP | cut -d . -f 2`
+		OI3=`echo $HOSTIP | cut -d . -f 3`
+	else
+		zenity   --warning --text="FALHA! O AMBIENTE PARA CUSTOMIZAÇÃO DE ISOS E QUE USA O APT-CACHER-NG NÃO ESTA INSTALADO!" --width=550 --height=200
+		# Remove configuração anterior do proxy 
+		if [ -f /etc/apt/apt.conf.d/00aptproxy ]; then
+			rm -f /etc/apt/apt.conf.d/00aptproxy
+		fi
+		exit
+	fi
 fi
 
-# Define a variavel LA_N 
-LA_N=$O1"."$O2"."$O3"."$O4"/"$CLASSE
+# Define as variaveis para acessar o AptCacherNG na porta padrão no host real do KVM
+HTP="http://"$OI1"."$OI2"."$OI3".1:3142"
+FTP="ftp://"$OI1"."$OI2"."$OI3".1:3142"
 
-# Redes LAN's default do KVM
-KVM1="192.168.122.0/24"
-KVM2="192.168.123.0/24"
+# Recupera o gateway default para verificar o ambiente de execução (KVM-server ou VM)
+GW=`route -n | awk '$1 == "0.0.0.0" {print $2}'`
+OG1=`echo $GW | cut -d . -f 1`
+OG2=`echo $GW | cut -d . -f 2`
+OG3=`echo $GW | cut -d . -f 3`
 
-# Remove configuração anterior do proxy 
-if [ -f /etc/apt/apt.conf.d/00aptproxy ]; then
-	rm -f /etc/apt/apt.conf.d/00aptproxy
-fi
+# Normalmente o IP do AptCacher é = AC_NG
+AC_NG=$OI1"."$OI2"."$OI3".1"
+if [ -z $KVMIP ]; then
+	# Se KVMIP for vazio, deve ser uma VM executada dentro do KVM-linux
 
-
-if [ $LA_N = $KVM1 ] || [ $LA_N = $KVM2 ]; then
-	# Se o host for uma VM dentro do KVM
-	#CACHEPORT é ignorado, pode ser definido em /etc/om.ips
-	
-	# Define as variaveis para acessar o AptCacherNG na porta padrão no host do KVM, conforme dados da conexão ativa obtidos em I_P
-	HTP="http://"$O1"."$O2"."$O3".1:3142"
-	FTP="ftp://"$O1"."$O2"."$O3".1:3142"
-
-	# Normalmente o IP do AptCacher no ambiente KVM está apontado par o primeiro Ip disponivel da rede KVM
-	AC_NG=$O1"."$O2"."$O3".1"
 	nc -w 1 -v $AC_NG 3142 < /dev/null
 	if [ $? -eq 0 ] && [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
 		echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
 		echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
 		echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
 	fi
-else
-	# Se o host estiver na LAN do provedor, lê variaveis definidas em om.ips
-	# Define as variaveis para acessar o AptCacherNG conforme dados da conexão ativa obtidos em I_P
-
+else # DEVE SER UM HOST KVM REAL
 	nc -w 1 -v $APTCACHER $CACHEPORT < /dev/null
 	if [ $? -eq 0 ]; then
+		# Define as variaveis para acessar o AptCacherNG, conforme dados da conexão ativa obtidos em om.ips
 		echo 'Acquire::http::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' > /etc/apt/apt.conf.d/00aptproxy
 		echo 'Acquire::https::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
 		echo 'Acquire::ftp::Proxy "http://'$APTCACHER':'$CACHEPORT'/";' >> /etc/apt/apt.conf.d/00aptproxy
+	else
+		echo 'Acquire::http::Proxy "'$HTP'";'  > /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::https::Proxy "'$HTP'";' >> /etc/apt/apt.conf.d/00aptproxy
+		echo 'Acquire::ftp::Proxy "'$FTP'";' >> /etc/apt/apt.conf.d/00aptproxy
 	fi
 fi
-
+cat /etc/apt/apt.conf.d/00aptproxy

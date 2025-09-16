@@ -60,7 +60,7 @@ elif [ "$1" = "2" ]; then
 	echo "		->Customização para uso em rede corporativa adicionado dos cerficados GOV/ITI com  bash $0 $1"
 	cp -f gac.ips om.ips
 	cp -f om.ips /etc/om.ips 
-elif [ "$1" = "3" ]; then
+elif [ "$1" = "3" ] || [ "$1" = "9" ]; then
 	echo "		->Customização para uso em instituições de saúde adicionado dos cerficados GOV/ITI com  bash $0 $1"
 	cp -f hgu.ips om.ips
 	cp -f om.ips /etc/om.ips 
@@ -114,14 +114,11 @@ apt autoremove -y
 if [ -f flatcache.sh ]; then
 	sh -x flatcache.sh
 fi
+
 if [ "$1" = "9" ]; then
 	echo "->Atualiza a imagem base para gerar um ISO auto instalável via Clonezilla, no hardware real configurado pelo script prepsrvnfsacng.sh"
 	exit
 fi
-# INSTALA O SUPORTE AO FLATPAK E ATIVA O CACHE
-#if [ -f flatcache.sh ]; then
-#	sh -x flatcache.sh
-#fi
 
 curl -fsS https://dl.brave.com/install.sh | sh
 
@@ -224,7 +221,7 @@ nome="warsaw"
 pacote=$(dpkg --get-selections | grep "$nome" )
 if [ ! -n "$pacote" ]; then
 	if [ -f /tmp/cache/cef.deb ]; then 
-		cp -f /tmp/cache/cef.deb /tmp/cef.deb
+		mv -f /tmp/cache/cef.deb /tmp/cef.deb
 	else	
 		wget https://cloud.gastecnologia.com.br/cef/warsaw/install/GBPCEFwr64.deb -O /tmp/cef.deb
 	fi
@@ -246,7 +243,7 @@ if [  -f scripts4om.sh ]; then
 	sh -x scripts4om.sh 
 fi
 if [ -f /tmp/cache/setup-deb-64.deb ]; then 
-	cp -f /tmp/cache/setup-deb-64.deb /tmp/setup-deb-64.deb
+	mv -f /tmp/cache/setup-deb-64.deb /tmp/setup-deb-64.deb
 fi
 if [ ! -f /tmp/setup-deb-64.deb ]; then 
 	wget https://get.webpkiplugin.com/Downloads/1730900328577/setup-deb-64  -O /tmp/setup-deb-64.deb  
@@ -267,12 +264,12 @@ dpkg -i /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
 apt autoremove -y
 apt clean
 apt purge
-
-ls -la /mnt 
-umount /mnt 
-rm -Rf /mnt/ 
-mkdir /mnt/
-chmod 755 /mnt/
+ 
+ls -lsa  /tmp/cache/ 
+/bin/umount /tmp/cache/
+ 
+ls -las /mnt
+/bin/umount  /mnt
 
 # Redefine as imagens de fundo para o Desktop corporativo substituindo o padrão
 # Renomeia as imagens originais e copia uma nova imagem com o nome da original em /usr/share/gnome-background-properties/ 

@@ -54,16 +54,13 @@ echo
 # FOI PASSADO ALGUM PARAMETRO VÁLIDO 
 if [ "$1" = "1" ]; then
 	echo "		->Customização para uso doméstico ou escritório móvel adicionado dos cerficados GOV/ITI com  bash $0 $1"
-	cp -f adv.ips om.ips
-	cp -f om.ips /etc/om.ips 
+	cp -f adv.ips /etc/om.ips
 elif [ "$1" = "2" ]; then
 	echo "		->Customização para uso em rede corporativa adicionado dos cerficados GOV/ITI com  bash $0 $1"
-	cp -f gac.ips om.ips
-	cp -f om.ips /etc/om.ips 
+	cp -f gac.ips /etc/om.ips 
 elif [ "$1" = "3" ] || [ "$1" = "9" ]; then
 	echo "		->Customização para uso em instituições de saúde adicionado dos cerficados GOV/ITI com  bash $0 $1"
-	cp -f hgu.ips om.ips
-	cp -f om.ips /etc/om.ips 
+	cp -f hgu.ips /etc/om.ips 
 fi
 echo ; echo "CTRL + C"
 echo "		interrompe o script";
@@ -76,10 +73,10 @@ grep -i "install" /var/log/dpkg.log > /etc/skel/custom/lista_software.txt.ori
 #  ARMAZENA OS SCRIPTS ORIGINAIS PARA AUDITORIA
 zip -v scriptscustom.zip  *.sh *.ips crontab hosts spice zorin* export*  >/dev/null
 
-#if [ ! -f /etc/apt/sourceslist.ori.br ]; then
-#	cp -f /etc/apt/sources.list /etc/apt/sourceslist.ori.br
+if [ ! -f /etc/apt/sourceslist.ori.br ]; then
+	cp -f /etc/apt/sources.list /etc/apt/sourceslist.ori.br
 	sed -i 's/br./us./g' /etc/apt/sources.list
-#fi
+fi
 sed -i 's/deb cdrom/#deb cdrom/g' /etc/apt/sources.list
 
 chmod 755 /etc/om.ips 

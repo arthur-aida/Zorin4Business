@@ -223,11 +223,10 @@ echo 'start_smartd=yes' >> /etc/default/smartmontools
 echo 'smartd_opts="--interval=7200"' >> /etc/default/smartmontools
 
 # "↓↓↓↓↓↓↓↓↓ Desativa a descoberta e instalação automática de impressoras de rede"
-#sed -i 's/BrowseLocalProtocols dnssd/BrowseLocalProtocols none/g'        /etc/cups/cups-browsed.conf
-#sed -i 's/BrowseLocalProtocols dnssd/BrowseLocalProtocols none/g'        /etc/cups/cupsd.conf
-#sed -i 's/BrowseRemoteProtocols dnssd/BrowseRemoteProtocols none/g'      /etc/cups/cups-browsed.conf
+sed -i 's/BrowseLocalProtocols dnssd/BrowseLocalProtocols none/g'        /etc/cups/cups-browsed.conf
+sed -i 's/BrowseLocalProtocols dnssd/BrowseLocalProtocols none/g'        /etc/cups/cupsd.conf
+sed -i 's/BrowseRemoteProtocols dnssd/BrowseRemoteProtocols none/g'      /etc/cups/cups-browsed.conf
 sed -i 's/# BrowseLocalProtocols /BrowseLocalProtocols /g'                /etc/cups/cups-browsed.conf
-sed -i 's/# BrowseProtocols /BrowseProtocols /g'                          /etc/cups/cups-browsed.conf
 sed -i 's/Browsing On/Browsing Off/g'                                     /etc/cups/cupsd.conf
 
 # "↓↓↓↓↓↓↓↓↓  DEPENDENCIAS DO ENDPOINT"

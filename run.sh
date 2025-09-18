@@ -55,12 +55,15 @@ echo
 if [ "$1" = "1" ]; then
 	echo "		->Customização para uso doméstico ou escritório móvel adicionado dos cerficados GOV/ITI com  bash $0 $1"
 	cp -f adv.ips /etc/om.ips
+	cp -f adv.ips om.ips
 elif [ "$1" = "2" ]; then
 	echo "		->Customização para uso em rede corporativa adicionado dos cerficados GOV/ITI com  bash $0 $1"
-	cp -f gac.ips /etc/om.ips 
+	cp -f gac.ips /etc/om.ips
+    cp -f gac.ips om.ips
 elif [ "$1" = "3" ] || [ "$1" = "9" ]; then
 	echo "		->Customização para uso em instituições de saúde adicionado dos cerficados GOV/ITI com  bash $0 $1"
 	cp -f hgu.ips /etc/om.ips 
+	cp -f hgu.ips om.ips 
 fi
 echo ; echo "CTRL + C"
 echo "		interrompe o script";

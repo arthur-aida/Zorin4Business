@@ -21,8 +21,8 @@
 
 if [ ! -f /etc/om.ips  ]; then
 	cp -f hgu.ips /etc/om.ips 
-	. /etc/om.ips
 fi
+. /etc/om.ips
 
 apt install net-tools -y
 # Recupera o endereço IP/NETMASK

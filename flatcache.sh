@@ -25,9 +25,9 @@ apt install flatpak nfs-common -y
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 if [ ! -f /etc/om.ips  ]; then
-	cp -f hgu.ips /etc/om.ips 
-	. /etc/om.ips
+	cp -f hgu.ips /etc/om.ips
 fi
+. /etc/om.ips
 
 KVMIP=`ip addr show |grep "virbr0" |grep -v dynamic | grep "inet " | head -1|cut -d" " -f6`
 HOSTIP=`ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1`

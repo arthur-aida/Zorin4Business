@@ -62,8 +62,8 @@ fi
 
 # "Se a conectividade até o servidor de atualização do pacote de segurança corporativo estiver operacional, prossegue com a instalação"
 nc -w 2 -v $DNS 53 </dev/null
-if [ $? -eq 0 ] && [ -f /etc/instalakesl.sh ] ; then
-	sh  /etc/instalakesl.sh
+if [ $? -eq 0 ] && [ -f /etc/KSEzorin.sh ] ; then
+	sh  /etc/KSEzorin.sh
 fi
 
 apt update

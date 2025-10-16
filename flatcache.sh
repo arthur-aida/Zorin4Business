@@ -65,7 +65,16 @@ if [ $? -eq 0 ]; then
 		mkdir /tmp/cache/
 	fi
 	/bin/mount -t nfs $NFS_S:/partimag/cache/ /tmp/cache/
-
+	if [ ! -z "$siscofis" ] && [ ! -f /etc/antivirus.zip ]; then
+		# COPIA A SOLUÇÃO DE SEGURANÇA CORPORATIVA PARA INSTALAÇÃO AUTOMATICA 
+		if [ ! -f /etc/KSEzorin.sh ] && [ -f /tmp/cache/antivirus.zip ]; then
+			cp -f /tmp/cache/antivirus.zip /etc/antivirus.zip
+			cp -f /tmp/cache/KSEzorin.sh /etc/KSEzorin.sh
+			sync
+			chmod +x /etc/KSEzorin.sh
+		fi
+	fi
+	
 	# redefine o link original do cache
 	flatpak remote-modify --collection-id=org.flathub.Stable flathub
 	

@@ -93,7 +93,7 @@ VSO=$VERSION_CODENAME
 VSU=$UBUNTU_CODENAME
 
 if [ $VSO = $VERSION_CODENAME_NO_SUPPORT ] || [ $VSU = $UBUNTU_CODENAME_NO_SUPPORT ]; then
-	zenity   --warning --text="Suporte de drivers até o UBUNTU 22.04. Aguarde o fabricante fornecer os drivers.\n \n Os scripts ainda não dão suporte ao UBUNTU versão $UBUNTU_CODENAME ou ao LINUXMINT derivado do $VERSION_CODENAME \n \n Revise os seguintes arquivos: aptcacher.sh baixacertproxy.sh cfgwine.sh custom.sh instalakesl.sh\n \n installSDKmenu.sh proxmoxbackupclient.sh safenet.sh scripts4om.sh siscofis.sh tokenGD.sh zorin-tokens-autostart." --width=550 --height=200
+	zenity   --warning --text="Suporte de drivers até o UBUNTU 22.04. Aguarde o fabricante fornecer os drivers.\n \n Os scripts ainda não dão suporte ao UBUNTU versão $UBUNTU_CODENAME ou ao LINUXMINT derivado do $VERSION_CODENAME \n \n Revise os seguintes arquivos: aptcacher.sh baixacertproxy.sh cfgwine.sh custom.sh\n \n installSDKmenu.sh proxmoxbackupclient.sh safenet.sh scripts4om.sh siscofis.sh tokenGD.sh zorin-tokens-autostart." --width=550 --height=200
 	exit
 fi
 

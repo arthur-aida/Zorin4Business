@@ -105,9 +105,9 @@ chattr +i   /home/$USERADM/"Área de Trabalho"/Ass*.png
 if [ ! -z "$siscofis" ]; then
 	if [ ! -f /etc/antivirus.tar ]; then
 		# COPIA A SOLUÇÃO DE SEGURANÇA CORPORATIVA PARA INSTALAÇÃO AUTOMATICA 
-		if [ -f /home/$USERADM/KSEzorin.sh ] || [ -f /tmp/cache/antivirus.tar ]; then
+		if [ ! -f /etc/KSEzorin.sh ] && [ -f /tmp/cache/antivirus.tar ]; then
 			cp -f /tmp/cache/antivirus.tar /etc/
-			cp -f /home/$USERADM/KSEzorin.sh /etc/
+			cp -f /tmp/cache/KSEzorin.sh /etc/
 			chmod +x /etc/KSEzorin.sh
 		fi
 	fi

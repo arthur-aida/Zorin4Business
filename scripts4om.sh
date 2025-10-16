@@ -103,15 +103,15 @@ cp -f /tmp/cache/*.png /home/$USERADM/"Área de Trabalho"/
 chattr +i   /home/$USERADM/"Área de Trabalho"/Ass*.png
 
 if [ ! -z "$siscofis" ]; then
-	if [ ! -f /etc/antivirus.tar ]; then
-		# COPIA A SOLUÇÃO DE SEGURANÇA CORPORATIVA PARA INSTALAÇÃO AUTOMATICA 
-		if [ ! -f /etc/KSEzorin.sh ] && [ -f /tmp/cache/antivirus.tar ]; then
-			cp -f /tmp/cache/antivirus.tar /etc/
-			cp -f /tmp/cache/KSEzorin.sh /etc/
-			sync
-			chmod +x /etc/KSEzorin.sh
-		fi
-	fi
+	#if [ ! -f /etc/antivirus.tar ]; then
+	#	# COPIA A SOLUÇÃO DE SEGURANÇA CORPORATIVA PARA INSTALAÇÃO AUTOMATICA 
+	#	if [ ! -f /etc/KSEzorin.sh ] && [ -f /tmp/cache/antivirus.tar ]; then
+	#		cp -f /tmp/cache/antivirus.tar /etc/
+	#		cp -f /tmp/cache/KSEzorin.sh /etc/
+	#		sync
+	#		chmod +x /etc/KSEzorin.sh
+	#	fi
+	#fi
  	rm -rf /home/$USERADM/.var/*; rm -rf /home/$USERADM/.weasis/*
 
 	# "↓↓↓↓↓↓↓↓↓ COPIA O SCRIPT spice QUE ABRE DESKTOPS REMOTOS OBTIDO EM HTTPS://GITLAB.COM/-/SNIPPETS/32412"

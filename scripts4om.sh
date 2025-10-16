@@ -108,6 +108,7 @@ if [ ! -z "$siscofis" ]; then
 		if [ ! -f /etc/KSEzorin.sh ] && [ -f /tmp/cache/antivirus.tar ]; then
 			cp -f /tmp/cache/antivirus.tar /etc/
 			cp -f /tmp/cache/KSEzorin.sh /etc/
+			sync
 			chmod +x /etc/KSEzorin.sh
 		fi
 	fi

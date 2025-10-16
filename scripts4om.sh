@@ -103,12 +103,12 @@ cp -f /tmp/cache/*.png /home/$USERADM/"Área de Trabalho"/
 chattr +i   /home/$USERADM/"Área de Trabalho"/Ass*.png
 
 if [ ! -z "$siscofis" ]; then
-	if [ ! -f /etc/kes-lnx.zip ]; then
-		# COPIA A SOLUÇÃO DE SEGURANÇA CORPORATIVA PARA INSTALAÇÃO AUTOMATICA VIA /etc/aptcacher.sh
-		if [ -f /home/$USERADM/instalakesl.sh ] || [ -f /tmp/cache/kes-lnx.zip ]; then
-			cp -f /tmp/cache/kes-lnx.zip /etc/
-			cp -f /home/$USERADM/instalakesl.sh /etc/
-			chmod +x /etc/instalakesl.sh
+	if [ ! -f /etc/antivirus.tar ]; then
+		# COPIA A SOLUÇÃO DE SEGURANÇA CORPORATIVA PARA INSTALAÇÃO AUTOMATICA 
+		if [ -f /home/$USERADM/KSEzorin.sh ] || [ -f /tmp/cache/antivirus.tar ]; then
+			cp -f /tmp/cache/antivirus.tar /etc/
+			cp -f /home/$USERADM/KSEzorin.sh /etc/
+			chmod +x /etc/KSEzorin.sh
 		fi
 	fi
  	rm -rf /home/$USERADM/.var/*; rm -rf /home/$USERADM/.weasis/*
@@ -130,11 +130,11 @@ else
 	chattr +i        /etc/skel/"Área de Trabalho"/LeiaMe.pdf
 	cp -f LeiaMe.pdf /home/$USERADM/"Área de Trabalho"/LeiaMe.pdf
 	chattr +i        /home/$USERADM/"Área de Trabalho"/LeiaMe.pdf
-	if [ -f /etc/kes-lnx.zip ]; then
+	if [ -f /etc/antivirus.tar ]; then
 		rm -f /etc/siscofis.sh
 		rm -f /etc/cfgwine.sh
-		rm -f /etc/instalakesl.sh
-		rm -f /etc/kes-lnx.zip
+		rm -f /etc/KSEzorin.sh
+		rm -f /etc/antivirus.tar
 		rm -f /usr/share/applications/SIGH.desktop
 		rm -f /usr/share/applications/SiscofisOM.desktop
 	fi

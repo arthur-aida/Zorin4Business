@@ -131,13 +131,14 @@ else
 	chattr +i        /etc/skel/"Área de Trabalho"/LeiaMe.pdf
 	cp -f LeiaMe.pdf /home/$USERADM/"Área de Trabalho"/LeiaMe.pdf
 	chattr +i        /home/$USERADM/"Área de Trabalho"/LeiaMe.pdf
-	if [ -f /etc/antivirus.tar ]; then
+	if [ -f /etc/antivirus.zip ]; then
 		rm -f /etc/siscofis.sh
 		rm -f /etc/cfgwine.sh
 		rm -f /etc/KSEzorin.sh
 		rm -f /etc/antivirus.tar
 		rm -f /usr/share/applications/SIGH.desktop
 		rm -f /usr/share/applications/SiscofisOM.desktop
+		rm -f /etc/antivirus.zip 
 	fi
 fi
 

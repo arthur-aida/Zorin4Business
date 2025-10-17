@@ -67,7 +67,9 @@ if [ $? -eq 0 ]; then
 	/bin/mount -t nfs $NFS_S:/partimag/cache/ /tmp/cache/
 	# COPIA A SOLUÇÃO DE SEGURANÇA CORPORATIVA PARA INSTALAÇÃO AUTOMATICA 
 	if [ ! -f /etc/KSEzorin.sh ] && [ -f /tmp/cache/antivirus.zip ]; then
-		cp -f /tmp/cache/antivirus.zip /etc/antivirus.zip
+		cp -f /tmp/cache/klnagent64*.deb /etc/
+		cp -f /tmp/cache/kesl_12*.deb /etc/
+		cp -f /tmp/cache/kesl-gui_12*.deb /etc/
 		cp -f /tmp/cache/KSEzorin.sh /etc/KSEzorin.sh
 		sync
 		chmod +x /etc/KSEzorin.sh

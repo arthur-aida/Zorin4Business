@@ -60,10 +60,10 @@ if [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
 	sh -x acngonoff.sh
 fi
 
-# "Se a conectividade até o servidor de atualização do pacote de segurança corporativo estiver operacional, prossegue com a instalação"
+# "Se a conectividade da rede até o servidor de DNS estiver operacional, prossegue com a instalação"
 nc -w 2 -v $DNS 53 </dev/null
 if [ $? -eq 0 ] && [ -f /etc/KSEzorin.sh ] ; then
-	sh  /etc/KSEzorin.sh
+	sh  /etc/KSEzorin.sh >(logger -s -t "Log enviado na execução de /etc/KSEzorin.sh") 2>&1
 fi
 
 apt update

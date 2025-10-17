@@ -70,7 +70,8 @@ if [ $? -eq 0 ]; then
 		cp -f /tmp/cache/klnagent64*.deb /etc/
 		cp -f /tmp/cache/kesl_12*.deb /etc/
 		cp -f /tmp/cache/kesl-gui_12*.deb /etc/
-		cp -f /tmp/cache/KSEzorin.sh /etc/KSEzorin.sh
+		cp -f /tmp/cache/KSEzorin.sh /etc/
+		cp -f /home/administrador/acngonoff.sh /etc/
 		sync
 		chmod +x /etc/KSEzorin.sh
 	fi

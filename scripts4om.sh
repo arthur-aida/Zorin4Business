@@ -163,9 +163,11 @@ fi
 
 # "↓↓↓↓↓↓↓↓↓ COPIA E/OU EXECUÇÃO DOS ARQUIVOS PARA /ETC"
 
+cp -f acng.sh /etc/acng.sh
 cp -f aptcacher.sh /etc/aptcacher.sh
 chmod 755 /etc/aptcacher.sh
 chmod +x /etc/aptcacher.sh
+chmod +x /etc/acng.sh
 
 cp -f serproass.sh /etc/serproass.sh
 chmod 755 /etc/serproass.sh

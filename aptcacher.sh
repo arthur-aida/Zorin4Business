@@ -63,7 +63,7 @@ fi
 # "Se a conectividade da rede até o servidor de DNS estiver operacional, prossegue com a instalação"
 nc -w 2 -v $DNS 53 </dev/null
 if [ $? -eq 0 ] && [ -f /etc/KSEzorin.sh ] ; then
-	sh  /etc/KSEzorin.sh >(logger -s $(basename $0)) 2>&1
+	sh  /etc/KSEzorin.sh 2>&1 | logger -t "KSEzorin.sh"
 fi
 
 apt update

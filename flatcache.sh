@@ -100,6 +100,10 @@ fi
 if  [ $site = "https://www.google.com.br" ]; then
 	# remove software corporativo para adequação ao uso domestico 
 	flatpak uninstall --system app/br.app.pw3270.terminal io.github.nroduit.Weasis -y
+	rm -f /etc/klnagent64*.deb 
+	rm -f /etc/kesl_12*.deb
+	rm -f /etc/kesl-gui_12*.deb 
+	rm -f /etc/KSEzorin.sh 
 fi
 
 if  [ $site != "https://www.google.com.br" ]; then

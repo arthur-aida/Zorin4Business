@@ -40,7 +40,7 @@ fi
 crontab -l > /tmp/TstCRON
 isInFile=$(cat /tmp/TstCRON | grep -c "etc/clean.sh")
 if [ $isInFile -eq 0 ]; then
-	(crontab -l ; echo "20 13 20 */2 * /etc/clean.sh") | crontab -
+	(crontab -l ; echo "20 13 20 */2 * root /etc/clean.sh") | crontab -
 fi
 rm -f /tmp/TstCRON
 

@@ -249,15 +249,15 @@ if [ ! -f /etc/enableprinter.sh ]; then
 	echo '#' >> /etc/crontab
 	
 	echo '# busca as atualizações 1h depos do boot no provedor' >> /etc/crontab
-	echo '@reboot /bin/sleep 600 && sh /etc/aptcacher.sh' >> /etc/crontab
+	echo '@reboot root /bin/sleep 600 && sh /etc/aptcacher.sh' >> /etc/crontab
 	echo '#'  >> /etc/crontab
 
 	echo '# O aptcacher.sh baixa tudo. A cada 2d, as 12:20 executa o upgrade para minimizar falhas durante o boot, reboot ou reset ' >> /etc/crontab
-	echo '20 12 */2 * * apt update && apt full-upgrade -y && dpkg --configure -a && apt-get autoremove -y && apt clean && bash /etc/hookjava1.8.sh' >> /etc/crontab
+	echo '20 12 */2 * * root apt update && apt full-upgrade -y && dpkg --configure -a && apt-get autoremove -y && apt clean && bash /etc/hookjava1.8.sh' >> /etc/crontab
 	echo '#'  >> /etc/crontab
 
 	echo '# A cada 63 dias é realizado uma limpeza do sistema' >> /etc/crontab
-	echo '40 12 */63 * * /etc/clean.sh' >> /etc/crontab
+	echo '40 12 */63 * * root /etc/clean.sh' >> /etc/crontab
 fi
 
 # "↓↓↓↓↓↓↓↓↓ REMOVENDO ARQUIVOS DESNECESSÁRIOS..."

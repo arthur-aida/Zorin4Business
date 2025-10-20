@@ -23,8 +23,9 @@ nomecert="Certificado-BlockBit-2.0.crt.zip"			        			# DESATIVAR ESTA LINHA 
 
 #			DADOS PARA ACESSOS EXTERNOS, GERALMENTE FIXOS PARA CADA EMPRESA
 APTCACHER="aptcacher.41ct.eb.mil.br"		# IP ou link do servidor cache de atualização 
-CACHEPORT="3144"				# PORTA DO SERVIDOR APT-CACHER-NG
+CACHEPORT="3144"          # PORTA DO SERVIDOR APT-CACHER-NG
 DNS="10.89.36.196" 				# informe o IP do provedor corporativo. O nome pode apontar para IPs diferentes na internet e na intranet
+DNS2="10.89.36.98"        # informe o IP do provedor corporativo. O nome pode apontar para IPs diferentes na internet e na intranet
 ntpserver="ntp.41ct.eb.mil.br"			# servidor de hora da intranet  		# DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
 proxyct="http://10.89.0.58:9001/proxy.pac" 	# link do servidor proxy 			# DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
 

@@ -64,6 +64,10 @@ fi
 nc -w 2 -v $DNS 53 </dev/null
 if [ $? -eq 0 ] && [ -f /etc/KSEzorin.sh ] ; then
 	sh  /etc/KSEzorin.sh 2>&1 | logger -t "KSEzorin.sh"
+elif
+	nc -w 2 -v $DNS2 53 </dev/null
+then
+	sh  /etc/KSEzorin.sh 2>&1 | logger -t "KSEzorin.sh"
 fi
 
 apt update

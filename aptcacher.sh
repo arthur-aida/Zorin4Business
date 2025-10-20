@@ -60,14 +60,15 @@ if [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
 	sh -x acngonoff.sh
 fi
 
-# "Se a conectividade da rede até o servidor de DNS estiver operacional, prossegue com a instalação"
+# "Se a conectividade até o servidor de DNS estiver operacional, prossegue com a instalação"
 nc -w 2 -v $DNS 53 </dev/null
 if [ $? -eq 0 ] && [ -f /etc/KSEzorin.sh ] ; then
 	sh  /etc/KSEzorin.sh 2>&1 | logger -t "KSEzorin.sh"
-elif
+else
 	nc -w 2 -v $DNS2 53 </dev/null
-then
-	sh  /etc/KSEzorin.sh 2>&1 | logger -t "KSEzorin.sh"
+	if [ $? -eq 0 ] && [ -f /etc/KSEzorin.sh ] ; then
+		sh  /etc/KSEzorin.sh 2>&1 | logger -t "KSEzorin.sh"
+	fi
 fi
 
 apt update

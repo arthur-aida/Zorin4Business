@@ -280,16 +280,16 @@ else
 	VSO=$VERSION_CODENAME
 	
 	if [ $VSO = "bullseye" ]; then
-		wget https://download.bleachbit.org/bleachbit_5.0.0-0_all_debian11.deb -P /tmp/
+		wget https://download.bleachbit.org/bleachbit_5.0.2-0_all_debian11.deb -P /tmp/
 	fi
 	if [ $VSO = "bionic" ] || [ $VSO = "focal" ] || [ $VSO = "una" ] || [ $VSO = "elsie" ]; then
-		wget https://download.bleachbit.org/bleachbit_5.0.0-0_all_ubuntu2004.deb -P /tmp/
+		wget https://download.bleachbit.org/bleachbit_5.0.2-0_all_ubuntu2004.deb -P /tmp/
 	fi
 	if [ $VSO = "jammy" ] || [ $VSO = "victoria" ] || [ $VSO = "faye" ] || [ $VSO = "virginia" ]; then
-		wget https://download.bleachbit.org/bleachbit_5.0.0-0_all_ubuntu2204.deb  -P /tmp/
+		wget https://download.bleachbit.org/bleachbit_5.0.2-0_all_ubuntu2204.deb  -P /tmp/
 	fi
 	if [ $VSO = "bookworm" ]; then
-		wget https://download.bleachbit.org/bleachbit_5.0.0-0_all_debian12.deb -P /tmp/
+		wget https://download.bleachbit.org/bleachbit_5.0.2-0_all_debian12.deb -P /tmp/
 	fi
 fi
 dpkg -i --force-all /tmp/bleachbit*.deb

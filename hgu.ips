@@ -13,18 +13,19 @@ hostsdeny="sshd : ALL"					# BLOQUEIO TOTAL DO SSH, EXCETO PARA LANs ACIMA
 
 
 #			DADOS PARA ACESSOS NA INTRANET CORPORATIVAS
-sigh="10.89.200.17"	 			# fonte de atualização a sistemas legados	#DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
-siscofis="10.89.200.41" 			# banco de dados de sistemas legados		#DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
-site="http://10.89.200.10" 									# DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO 	
+sigh="10.89.200.17"	 			# fonte de atualização a sistemas legados	                                              #DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
+siscofis="10.89.200.41" 			# banco de dados de sistemas legados		                                            #DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
+site="http://10.89.200.10" 									                                                                      # DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO 	
 
 #			VARIAVEIS QUE LOCALIZAM O CERTIFICADO DO PROXY CORPORATIVO DE NAVEGAÇÃO
-urlcert="http://10.89.37.45/images/certificado/" 						# DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
-nomecert="Certificado-BlockBit-2.0.crt.zip"							# DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
+urlcert="http://10.89.37.45/images/certificado/" 						                                                      # DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
+nomecert="Certificado-BlockBit-2.0.crt.zip"							                                                          # DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
 
 #			DADOS PARA ACESSOS EXTERNOS, GERALMENTE FIXOS PARA CADA EMPRESA
 APTCACHER="10.89.37.46"				# IP ou link do servidor cache de atualização 
-CACHEPORT="3144"				# PORTA DO SERVIDOR APT-CACHER-NG
+CACHEPORT="3144"				  # PORTA DO SERVIDOR APT-CACHER-NG
 DNS="10.89.36.196"				# informe o IP do provedor corporativo. O nome pode apontar para IPs diferentes na internet e na intranet
-ntpserver="10.89.37.46"         		# servidor de hora da intranet  		# DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
-proxyct="http://10.89.0.58:9001/proxy.pac" 	# link do servidor proxy 			# DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
+DNS2="10.89.36.98"        # informe o IP do provedor corporativo. O nome pode apontar para IPs diferentes na internet e na intranet
+ntpserver="10.89.37.46"   # servidor de hora da intranet  		                                                    # DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
+proxyct="http://10.89.0.58:9001/proxy.pac" 	# link do servidor proxy 			                                        # DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
 

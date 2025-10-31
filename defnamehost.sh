@@ -71,6 +71,7 @@ ID_LAN="${FORMATTED_A}${FORMATTED_B}"
 
 # Definir a variável HOST_NAME concatenando ID_LAN e FOUR_LAST_HEX, separados por "_"
 HOST_NAME="${ID_LAN}_${FOUR_LAST_HEX}"
-echo "$HOST_NAME" > /etc/hostname
-
-
+if [ -f /etc/hostname ] && [ ! -f /etc/hostname.old ]; then
+	mv /etc/hostname /etc/hostname.old
+	echo "$HOST_NAME" > /etc/hostname
+fi

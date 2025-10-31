@@ -85,5 +85,5 @@ ID_LAN="${FORMATTED_A}${FORMATTED_B}"
 # ==============================================================================
 
 # Definir a variável HOST_NAME concatenando ID_LAN e FOUR_LAST_HEX, separados por "_"
-HOST_NAME="${ID_LAN}_${FOUR_LAST_HEX}"
+HOST_NAME='Z'"${ID_LAN}_${FOUR_LAST_HEX}"
 hostnamectl set-hostname "$HOST_NAME"

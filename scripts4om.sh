@@ -82,7 +82,7 @@ if [ ! -f /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager
 fi
 
 # "↓↓↓↓↓↓↓↓↓ APLICA CONFIGURAÇÕES ESPECIAIS DE SEGURANÇA, SFC"
-bash +x defnamehost.sh
+
 grep -v "sshd" /etc/hosts.allow > /tmp/tmphostfile && mv /tmp/tmphostfile /etc/hosts.allow
 grep -v "sshd" /etc/hosts.deny > /tmp/tmphostfile && mv /tmp/tmphostfile /etc/hosts.deny
 echo "$hostsallow0" >> /etc/hosts.allow

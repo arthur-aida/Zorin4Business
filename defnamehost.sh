@@ -18,7 +18,7 @@ fi
 DEFAULT_INTERFACE=$(ip route show default | grep -oP 'dev\s+\K\S+' 2>/dev/null)
 if [ -z "$DEFAULT_INTERFACE" ]; then
     echo " ERRO Crítico: Não foi possível determinar a interface de rede padrão." >&2
-    echo "localhost" > /etc/hostname
+    bash +x nameboardwithid.sh
     exit 1
 fi
 

@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# depende do acionamento no /etc/crontab 
+#@reboot root /bin/sleep 30 && bash /etc/defnamehost.sh
 # Este script recupera o MAC e o IP do gateway default, processa os dados
 # e define a variável a ser atribuída como nome do host (hostname).
 
@@ -11,6 +12,10 @@
 GATEWAY_IP=$(ip route show default | awk '/default/ {print $3}' 2>/dev/null)
 if [ -z "$GATEWAY_IP" ]; then
     echo "ERRO Crítico: Não foi possível determinar o endereço IP do gateway default." >&2
+    if [ -f /etc/hostname ]; then
+    	rm /etc/hostname*
+    fi
+    hostnamectl set-hostname ""
     exit 1
 fi
 
@@ -18,8 +23,10 @@ fi
 DEFAULT_INTERFACE=$(ip route show default | grep -oP 'dev\s+\K\S+' 2>/dev/null)
 if [ -z "$DEFAULT_INTERFACE" ]; then
     echo " ERRO Crítico: Não foi possível determinar a interface de rede padrão." >&2
-    echo "" > /etc/hostname
-    #bash +x nameboardwithid.sh
+    if [ -f /etc/hostname ]; then
+        rm /etc/hostname*
+    fi
+    hostnamectl set-hostname ""
     exit 1
 fi
 
@@ -31,6 +38,10 @@ fi
 RAW_MAC_ADDRESS=$(ip link show "$DEFAULT_INTERFACE" | awk '/ether/ {print $2}' 2>/dev/null)
 if [ -z "$RAW_MAC_ADDRESS" ]; then
     echo "ERRO: Não foi possível obter o MAC address para a interface $DEFAULT_INTERFACE." >&2
+    if [ -f /etc/hostname ]; then
+        rm /etc/hostname
+    fi
+    hostnamectl set-hostname ""
     exit 1
 fi
 
@@ -50,6 +61,10 @@ IFS='.' read -r -a IP_OCTETS <<< "$GATEWAY_IP"
 # Verifica se o IP é IPv4
 if [ ${#IP_OCTETS[@]} -ne 4 ]; then
     echo "ERRO: O IP do gateway ($GATEWAY_IP) não é um IPv4 válido (4 octetos)." >&2
+    if [ -f /etc/hostname ]; then
+        rm /etc/hostname
+    fi
+    hostnamectl set-hostname ""
     exit 1
 fi
 
@@ -71,7 +86,4 @@ ID_LAN="${FORMATTED_A}${FORMATTED_B}"
 
 # Definir a variável HOST_NAME concatenando ID_LAN e FOUR_LAST_HEX, separados por "_"
 HOST_NAME="${ID_LAN}_${FOUR_LAST_HEX}"
-if [ -f /etc/hostname ] && [ ! -f /etc/hostname.old ]; then
-	mv /etc/hostname /etc/hostname.old
-	echo "$HOST_NAME" > /etc/hostname
-fi
+hostnamectl set-hostname "$HOST_NAME"

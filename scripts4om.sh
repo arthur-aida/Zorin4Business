@@ -177,6 +177,10 @@ cp -f clean.sh /etc/clean.sh
 chmod 755 /etc/clean.sh
 chmod +x clean.sh
 
+cp -f defnamehost.sh /etc/defnamehost.sh
+chmod 755 /etc/defnamehost.sh
+chmod +x defnamehost.sh
+
 cp -f baixacertproxy.sh  /etc/baixacertproxy.sh
 chmod 755 /etc/baixacertproxy.sh
 chmod +x /etc/baixacertproxy.sh

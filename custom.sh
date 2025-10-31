@@ -247,8 +247,10 @@ if [ ! -f /etc/enableprinter.sh ]; then
 	echo '#Reabilita impressoras pausadas a cada 5 minutos' >> /etc/crontab
 	echo '*/5 * * * * root  /etc/enableprinter.sh' >> /etc/crontab
 	echo '#' >> /etc/crontab
-
-	echo '@reboot root bash +x defnamehost.sh' >> /etc/crontab
+	   
+	echo '# Redefine o hostname se houver uma rede ou retorna ao nome default se não' >> /etc/crontab
+	echo '@reboot root /bin/sleep 30 && bash /etc/defnamehost.sh' >> /etc/crontab
+	echo '#' >> /etc/crontab
 
 	echo '# busca as atualizações 1h depos do boot no provedor' >> /etc/crontab
 	echo '@reboot root /bin/sleep 600 && sh /etc/aptcacher.sh' >> /etc/crontab

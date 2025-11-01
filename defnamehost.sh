@@ -15,7 +15,7 @@ if [ -z "$GATEWAY_IP" ]; then
     if [ -f /etc/hostname ]; then
     	rm /etc/hostname*
     fi
-    hostnamectl set-hostname ""
+    hostnamectl set-hostname $(cat /sys/class/dmi/id/board_name | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
     exit 1
 fi
 
@@ -23,10 +23,7 @@ fi
 DEFAULT_INTERFACE=$(ip route show default | grep -oP 'dev\s+\K\S+' 2>/dev/null)
 if [ -z "$DEFAULT_INTERFACE" ]; then
     echo " ERRO Crítico: Não foi possível determinar a interface de rede padrão." >&2
-    if [ -f /etc/hostname ]; then
-        rm /etc/hostname*
-    fi
-    hostnamectl set-hostname ""
+    hostnamectl set-hostname $(cat /sys/class/dmi/id/board_name | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
     exit 1
 fi
 
@@ -38,9 +35,6 @@ fi
 RAW_MAC_ADDRESS=$(ip link show "$DEFAULT_INTERFACE" | awk '/ether/ {print $2}' 2>/dev/null)
 if [ -z "$RAW_MAC_ADDRESS" ]; then
     echo "ERRO: Não foi possível obter o MAC address para a interface $DEFAULT_INTERFACE." >&2
-    if [ -f /etc/hostname ]; then
-        rm /etc/hostname
-    fi
     hostnamectl set-hostname ""
     exit 1
 fi
@@ -61,10 +55,7 @@ IFS='.' read -r -a IP_OCTETS <<< "$GATEWAY_IP"
 # Verifica se o IP é IPv4
 if [ ${#IP_OCTETS[@]} -ne 4 ]; then
     echo "ERRO: O IP do gateway ($GATEWAY_IP) não é um IPv4 válido (4 octetos)." >&2
-    if [ -f /etc/hostname ]; then
-        rm /etc/hostname
-    fi
-    hostnamectl set-hostname ""
+    hostnamectl set-hostname $(cat /sys/class/dmi/id/board_name | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
     exit 1
 fi
 

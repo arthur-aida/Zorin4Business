@@ -4,7 +4,7 @@
 # Este script testa o IP do gateway default e a interface padrão, 
 # na sequencia, processa o MAC ADDRESS e o endereço IP da interface 
 # padrão como exemplo, MAC:AA:BB:CC:DD:EE:FF e IP: 172.16.0.1/24 com 
-# a saída processada igual a Z172016CCDDEEFF que será a variável a ser 
+# a saída processada igual a z172016ccddeeff que será a variável a ser 
 # atribuída como nome do host (hostname). Em quaisquer situaçoes de erro,
 # o hostname será redefinido para o modelo da placa mãe, se possível.
 # ==============================================================================
@@ -84,5 +84,5 @@ ID_LAN="${FORMATTED_A}${FORMATTED_B}"
 # ==============================================================================
 
 # Definir a variável HOST_NAME concatenando ID_LAN e FOUR_LAST_HEX, separados por "_"
-HOST_NAME='Z'"${ID_LAN}_${FOUR_LAST_HEX}"
+HOST_NAME='z'"${ID_LAN}_${FOUR_LAST_HEX}"
 hostnamectl set-hostname "$HOST_NAME"

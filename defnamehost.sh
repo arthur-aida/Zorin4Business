@@ -1,21 +1,29 @@
 #!/bin/bash
-# depende do acionamento no /etc/crontab 
-#@reboot root /bin/sleep 30 && bash /etc/defnamehost.sh
-# Este script recupera o MAC e o IP do gateway default, processa os dados
-# e define a variável a ser atribuída como nome do host (hostname).
-
+# Este script depende do acionamento no /etc/crontab pela linha 
+# @reboot root /bin/sleep 30 && bash /etc/defnamehost.sh
+# Este script testa o IP do gateway default e a interface padrão, 
+# na sequencia, processa o MAC ADDRESS e o endereço IP da interface 
+# padrão como exemplo, MAC:AA:BB:CC:DD:EE:FF e IP: 172.16.0.1/24 com 
+# a saída processada igual a Z172016CCDDEEFF que será a variável a ser 
+# atribuída como nome do host (hostname). Em quaisquer situaçoes de erro,
+# o hostname será redefinido para o modelo da placa mãe, se possível.
 # ==============================================================================
 # 1. IDENTIFICAÇÃO E VERIFICAÇÃO INICIAL
 # ==============================================================================
+CODE_MANUFACTOR=`dmidecode -s system-manufacturer`
+VM_MODELS= "VMwareVirtualBoxQEMUKVMHyper-V"
+if echo $CODE_MANUFACTOR | grep -qi $VM_MODELS; then
+    NAMEBOARD=$(dmidecode -s system-product-name | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+else
+    NAMEBOARD=$(cat /sys/class/dmi/id/board_name | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+fi
+hostnamectl set-hostname $NAMEBOARD
 
 # Obter o Endereço IP do Gateway Padrão
 GATEWAY_IP=$(ip route show default | awk '/default/ {print $3}' 2>/dev/null)
 if [ -z "$GATEWAY_IP" ]; then
     echo "ERRO Crítico: Não foi possível determinar o endereço IP do gateway default." >&2
-    if [ -f /etc/hostname ]; then
-    	rm /etc/hostname*
-    fi
-    hostnamectl set-hostname $(cat /sys/class/dmi/id/board_name | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+    hostnamectl set-hostname $NAMEBOARD
     exit 1
 fi
 
@@ -23,7 +31,7 @@ fi
 DEFAULT_INTERFACE=$(ip route show default | grep -oP 'dev\s+\K\S+' 2>/dev/null)
 if [ -z "$DEFAULT_INTERFACE" ]; then
     echo " ERRO Crítico: Não foi possível determinar a interface de rede padrão." >&2
-    hostnamectl set-hostname $(cat /sys/class/dmi/id/board_name | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+    hostnamectl set-hostname $NAMEBOARD
     exit 1
 fi
 
@@ -35,7 +43,7 @@ fi
 RAW_MAC_ADDRESS=$(ip link show "$DEFAULT_INTERFACE" | awk '/ether/ {print $2}' 2>/dev/null)
 if [ -z "$RAW_MAC_ADDRESS" ]; then
     echo "ERRO: Não foi possível obter o MAC address para a interface $DEFAULT_INTERFACE." >&2
-    hostnamectl set-hostname ""
+    hostnamectl set-hostname $NAMEBOARD
     exit 1
 fi
 

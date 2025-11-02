@@ -53,7 +53,7 @@ O objetivo é garantir que seja reproduzido em todos os computadores dos usuári
     A) Reabilitação automática de impressoras pausadas, minimizando visitas de suporte ao usuário;
     B) Gerenciamento remoto de impressoras USB compartilhadas no navegador WEB para o administrador, via endereço IP da estação onde está a porta USB;
     C) Desativação (nos parâmetros do CUPS) do anúncio por broadcast de impressoras compartilhadas para evitar a poluição na rede;
-    D) Os nomes dos hosts são atribuído dinamicamente através do servidor de DHCP, via cadastro do IP e MAC reservado juntamente com o nome do hostname definidos no serviço DNSmasq;
+    D) O nome do host é atribuído dinamicamente. O script defnamehost.sh (Inspecione-o) concatena “z”+ o ID da rede obtido do IP e os 4 últimos hexadecimais do MAC;
     E) Possibilidade de pré-configuração da página inicial no Mozilla Firefox SFC (definido na variavel site no arquivo adv.ips/gac.ips/hgu.ips) reabilitando das linhas da seção “APLICA A PERSONALIZAÇÃO CORPORATIVA AO MOZILLA STANDARD” no arquivo script4om.sh;
     F) Geração dinâmica e integração de senhas e passkeys no keepassxc com navegadores;
     G) Disponibilidade do wine stable (com HOLD, exceto perfil doméstico) para executar ferramentas corporativas legadas no Zorin OS;

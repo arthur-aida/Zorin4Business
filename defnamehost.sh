@@ -7,11 +7,9 @@
 # na sequencia, processa o MAC ADDRESS e o endereço IP da interface 
 # padrão como exemplo, MAC:AA:BB:CC:DD:EE:FF e IP: 172.16.0.1/24 com 
 # a saída processada igual a z172016ccddeeff que será a variável a ser 
-# atribuída como nome do host (hostname). Em quaisquer situaçoes de erro,
-# o hostname será redefinido para o modelo da placa mãe, se possível.
-# ==============================================================================
-# 1. IDENTIFICAÇÃO E VERIFICAÇÃO INICIAL 
-# ==============================================================================
+# atribuída como nome do host (hostname). VM são exceção. 
+# Em quaisquer situaçoes de erro, o hostname será redefinido para localhost.
+
 VIRTUAL="NO"
 VM_MANUFACTURER=$(dmidecode -s system-manufacturer 2>/dev/null | tr '[:upper:]' '[:lower:]' | tr -d ' ')
 
@@ -36,10 +34,6 @@ if [ -z "$DEFAULT_INTERFACE" ]; then
     exit 1
 fi
 
-# ==============================================================================
-# 2. PROCESSAMENTO DO MAC ADDRESS (4 últimos hexadecimais)
-# ==============================================================================
-
 # Obter o MAC address bruto
 RAW_MAC_ADDRESS=$(ip link show "$DEFAULT_INTERFACE" | awk '/ether/ {print $2}' 2>/dev/null)
 if [ -z "$RAW_MAC_ADDRESS" ]; then
@@ -54,9 +48,6 @@ MAC_FULL_UNIFIED=$(echo "$RAW_MAC_ADDRESS" | tr -d ':')
 # Usamos expansão de parâmetro do Bash: : -8 pega os últimos 8 caracteres.
 FOUR_LAST_HEX="${MAC_FULL_UNIFIED: -8}"
 
-# ==============================================================================
-# 3. PROCESSAMENTO DO ENDEREÇO IP (2 primeiros octetos formatados) ou VM
-# ==============================================================================
 if [ $VIRTUAL = "NO" ]; then
 
 	# Separa os octetos usando o ponto como delimitador e armazena em um array
@@ -84,8 +75,9 @@ if [ $VIRTUAL = "NO" ]; then
 
 else
 
-	#É UMA VM E DEVE SER PROCESSADO OS 6 CARACTERES INICIAIS DA STRING 
-	# Define o caminho para o arquivo do Fabricante (Vendor) no sistema DMI
+	#É UMA VM. DEVERÁ SER PROCESSADO OS 6 CARACTERES INICIAIS DA STRING DA PLATAFORMA DE VIRTUALIZAÇÃO 
+
+	# Define o caminho para o arquivo do fornecedor (Vendor) no sistema DMI
 	VENDOR_FILE="/sys/class/dmi/id/chassis_vendor"
 	MAX_CHARS=6
 
@@ -93,48 +85,35 @@ else
 	hostname=""
 	RAW_VENDOR_STRING=""
 
-	# ==============================================================================
-	# 1. RECUPERAR O NOME DO FABRICANTE SEM SUDO
-	# ==============================================================================
-
 	if [ -r "$VENDOR_FILE" ]; then
-	    # 1.1. Ler o conteúdo do arquivo
 	    # cat: lê o arquivo
 	    # tr -d '\n\t': remove quebras de linha e tabulações
 	    # sed 's/^[[:space:]]*//;s/[[:space:]]*$//': remove espaços no início/fim
 	    RAW_VENDOR_STRING=$(cat "$VENDOR_FILE" 2>/dev/null | tr -d '\n\t' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 	    
 	    if [ -z "$RAW_VENDOR_STRING" ]; then
-		echo "ERRO: Arquivo do Fabricante acessível, mas a string está vazia." >&2
-		RAW_VENDOR_STRING="UNKNOWNHW"
+		echo "ERRO: Arquivo do Fabricante acessível. A string está vazia." >&2
+		RAW_VENDOR_STRING="UNKNOW"
 	    fi
 	else
 	    echo "ERRO: Não foi possível acessar o arquivo $VENDOR_FILE sem root. Falha na leitura." >&2
 	    # Valor de fallback, caso a leitura falhe completamente
-	    RAW_VENDOR_STRING="UNKNOWNHW"
+	    RAW_VENDOR_STRING="UNKNOW"
 	fi
-	# ==============================================================================
-	# 2. PROCESSAMENTO E TRUNCAMENTO DA STRING
-	# ==============================================================================
 
-	# 2.1. Remover espaços da string do Fabricante
+	# Remover espaços da string do Fabricante
 	# tr -d ' ': remove todos os espaços
 	CLEAN_VENDOR=$(echo "$RAW_VENDOR_STRING" | tr -d ' ')
 
-	# 2.2. Truncar para os 6 primeiros caracteres
+	# Truncar para os 6 primeiros caracteres
 	# cut -c 1-6: comando POSIX padrão para fatiamento (slice) de string
 	TRUNCATED_VENDOR=$(echo "$CLEAN_VENDOR" | cut -c 1-$MAX_CHARS)
 
-	# 2.3. Definir a variável final 'hostname'
+	# Definir a variável final 'hostname'
 	ID_LAN=$(echo "$TRUNCATED_VENDOR" | tr '[:lower:]' '[:upper:]')
 	HOST_NAME="${ID_LAN}${FOUR_LAST_HEX}"
 fi
 
-# ==============================================================================
-# 4. CONCATENAÇÃO FINAL
-# ==============================================================================
-
-# Definir a variável HOST_NAME concatenando ID_LAN e FOUR_LAST_HEX
 hostnamectl set-hostname "$HOST_NAME"
 echo "$HOST_NAME"
 

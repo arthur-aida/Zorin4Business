@@ -1,13 +1,13 @@
 #!/bin/bash
 # NOTA: O shebang é configurado para '/bin/sh' para garantir a máxima compatibilidade (POSIX).
 
-# Este script depende do acionamento no /etc/crontab pela linha 
+# Este script depende do acionamento no /etc/crontab pela linha
 # @reboot root /bin/sleep 30 && bash /etc/defnamehost.sh
-# Este script testa o IP do gateway default e a interface padrão, 
-# na sequencia, processa o MAC ADDRESS e o endereço IP da interface 
-# padrão como exemplo, MAC:AA:BB:CC:DD:EE:FF e IP: 172.16.0.1/24 com 
-# a saída processada igual a z172016ccddeeff que será a variável a ser 
-# atribuída como nome do host (hostname). VM são exceção. 
+# Este script testa o IP do gateway default e a interface padrão,
+# na sequencia, processa o MAC ADDRESS e o endereço IP da interface
+# padrão como exemplo, MAC:AA:BB:CC:DD:EE:FF e IP: 172.16.0.1/24 com
+# a saída processada igual a z172016ccddeeff que será a variável a ser
+# atribuída como nome do host (hostname). VM são exceção.
 # Em quaisquer situaçoes de erro, o hostname será redefinido para localhost.
 
 VIRTUAL="NO"
@@ -75,7 +75,7 @@ if [ $VIRTUAL = "NO" ]; then
 
 else
 
-	#É UMA VM. DEVERÁ SER PROCESSADO OS 6 CARACTERES INICIAIS DA STRING DA PLATAFORMA DE VIRTUALIZAÇÃO 
+	#É UMA VM. DEVERÁ SER PROCESSADO OS 6 CARACTERES INICIAIS DA STRING DA PLATAFORMA DE VIRTUALIZAÇÃO
 
 	# Define o caminho para o arquivo do fornecedor (Vendor) no sistema DMI
 	VENDOR_FILE="/sys/class/dmi/id/chassis_vendor"
@@ -90,7 +90,6 @@ else
 	    # tr -d '\n\t': remove quebras de linha e tabulações
 	    # sed 's/^[[:space:]]*//;s/[[:space:]]*$//': remove espaços no início/fim
 	    RAW_VENDOR_STRING=$(cat "$VENDOR_FILE" 2>/dev/null | tr -d '\n\t' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-	    
 	    if [ -z "$RAW_VENDOR_STRING" ]; then
 		echo "ERRO: Arquivo do Fabricante acessível. A string está vazia." >&2
 		RAW_VENDOR_STRING="UNKNOW"
@@ -115,6 +114,3 @@ else
 fi
 
 hostnamectl set-hostname "$HOST_NAME"
-echo "$HOST_NAME"
-
-

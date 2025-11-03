@@ -10,7 +10,7 @@
 # atribuída como nome do host (hostname). VM são exceção.
 # Em quaisquer situaçoes de erro, o hostname será redefinido para localhost.
 
-if [ -f /home/hostname ]; then
+if [ -f /etc/hostname ]; then
 	exit
 fi
 

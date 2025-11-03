@@ -10,6 +10,10 @@
 # atribuída como nome do host (hostname). VM são exceção.
 # Em quaisquer situaçoes de erro, o hostname será redefinido para localhost.
 
+if [ -f /home/hostname ]; then
+	exit
+fi
+
 VIRTUAL="NO"
 VM_MANUFACTURER=$(dmidecode -s system-manufacturer 2>/dev/null | tr '[:upper:]' '[:lower:]' | tr -d ' ')
 

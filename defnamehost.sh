@@ -59,11 +59,14 @@ if [ $VIRTUAL = "NO" ]; then
 	    hostnamectl set-hostname $(cat /sys/class/dmi/id/board_name | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
 	    exit 1
 	fi
-
-	# Os dois primeiros octetos são os índices [0] e [1]
-	OCTET_A=${IP_OCTETS[0]} # Primeiro octeto
-	OCTET_B=${IP_OCTETS[1]} # Segundo octeto
-
+ 
+	# Os dois primeiros octetos são os índices [0] e [1]. Os Dois últimos octetos são os índices  [2] e [3].
+	OCTET_A=${IP_OCTETS[0]} # Primeiro octeto [0] ideal para intranets. Pequenas redes pode-se usar o índice [2]. 
+	OCTET_B=${IP_OCTETS[1]} # Segundo octeto [1] ideal para intranets. Pequenas redes pode-se usar o índice [3].
+	
+	# Se o IP do gateway for 172.16.8.1. OCTET_A="172" e OCTET_B="016" com ID_LAN="172016", o que identifica a estação por parte do prefixo da subrede  
+	# Se optar pelos  índices [2] e [3]. OCTET_A="008" e OCTET_B="001" com ID_LAN="008001", o que identifica a estação por parte do IP
+	
 	# Formatar cada octeto para 3 caracteres, preenchendo com "0" à esquerda
 	# Usamos printf para garantir a formatação correta: %03d
 	FORMATTED_A=$(printf "%03d" "$OCTET_A")

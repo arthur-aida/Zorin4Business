@@ -140,13 +140,13 @@ mv "$TEMP_FILE" "$SOURCES_FILE"
 # Verificar se a operação foi bem-sucedida
 if [ $? -eq 0 ]; then
     echo "Arquivo $SOURCES_FILE atualizado com sucesso!"
-	if [ -f "$BACKUP_FILE" ]; then
-	    rm -f "$C"
-	    echo "Arquivo $BACKUP_FILE removido com sucesso!"
-	fi
 else
     echo "Erro: Falha ao atualizar o arquivo." >&2
     exit 1
+fi
+if [ -f $BACKUP_FILE ]; then
+	rm -f $BACKUP_FILE
+	echo "Arquivo $BACKUP_FILE removido com sucesso!"
 fi
 
 # Ativa o cache

@@ -11,6 +11,7 @@
 # Em quaisquer situaçoes de erro, o hostname será redefinido para localhost.
 
 if [ -f /etc/hostname ]; then
+    hostnamectl set-hostname $(cat /etc/hostname)
 	exit
 fi
 

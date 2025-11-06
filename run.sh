@@ -100,25 +100,54 @@ fi
 gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/oracle-jdk11-installer.gpg --keyserver keyserver.ubuntu.com --recv-keys EA8CACC073C3DB2A
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-jdk11-installer.gpg] https://ppa.launchpadcontent.net/linuxuprising/java/ubuntu jammy main" | sudo tee /etc/apt/sources.list.d/oracle-jdk11-installer.list > /dev/null
 
-#  Cria o backup antes de adicionar assinatura GPG às entradas do sources.list
+# Adicionar assinatura GPG às entradas do sources.list
+# Compatível com qualquer shell (sh, bash, dash, etc.)
 SOURCES_FILE="/etc/apt/sources.list"
 BACKUP_FILE="/etc/apt/sources.list.bak.$(date +%Y%m%d_%H%M%S)"
 
+# Criar backup do arquivo original
+echo "Criando backup: $BACKUP_FILE"
 cp "$SOURCES_FILE" "$BACKUP_FILE"
 
-# Processar com awk
-awk '
-$1 == "deb" && /ubuntu\.com\/ubuntu\// && !/\[signed-by=\/usr\/share\/keyrings\/ubuntu-archive-keyring\.gpg\]/ {
-    print "deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg]", substr($0, 5)
-    next
-}
-{ print }
-' "$SOURCES_FILE" > "$SOURCES_FILE.new" && mv "$SOURCES_FILE.new" "$SOURCES_FILE"
-
-if [ -f "$BACKUP_FILE" ]; then
-    rm -f "$BACKUP_FILE"
+# Verificar se o backup foi criado com sucesso
+if [ ! -f "$BACKUP_FILE" ]; then
+    echo "Erro: Não foi possível criar o backup do arquivo." >&2
+    exit 1
 fi
-echo "$SOURCES_FILE" " assinaturas GPG anexadas"
+
+# Criar arquivo temporário
+TEMP_FILE=$(mktemp)
+
+# Usar sed para processamento mais eficiente
+# Padrão: linhas que começam com "deb", contêm ".ubuntu.com/ubuntu" mas NÃO contêm "[signed-by=...]"
+sed -E '
+/^deb[[:space:]]/ {
+    /\.ubuntu\.com\/ubuntu/ {
+        /\[signed-by=\/usr\/share\/keyrings\/ubuntu-archive-keyring\.gpg\]/! {
+            s/^deb /deb [signed-by=\/usr\/share\/keyrings\/ubuntu-archive-keyring.gpg] /
+        }
+    }
+}
+' "$SOURCES_FILE" > "$TEMP_FILE"
+
+# Verificar diferenças
+echo "Diferenças entre original e modificado:"
+diff -u "$SOURCES_FILE" "$TEMP_FILE" || true
+
+# Substituir o arquivo original
+mv "$TEMP_FILE" "$SOURCES_FILE"
+
+# Verificar se a operação foi bem-sucedida
+if [ $? -eq 0 ]; then
+    echo "Arquivo $SOURCES_FILE atualizado com sucesso!"
+	if [ -f "$BACKUP_FILE" ]; then
+	    rm -f "$C"
+	    echo "Arquivo $BACKUP_FILE removido com sucesso!"
+	fi
+else
+    echo "Erro: Falha ao atualizar o arquivo." >&2
+    exit 1
+fi
 
 # Ativa o cache
 sh -x acngonoff.sh

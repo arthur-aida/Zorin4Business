@@ -123,7 +123,9 @@ awk '
 { print }
 ' "$SOURCES_FILE" > "$SOURCES_FILE.new" && mv "$SOURCES_FILE.new" "$SOURCES_FILE"
 
-echo "Operação concluída. Backup em: $BACKUP_FILE"
+if [ -f "$BACKUP_FILE" ]; then
+    rm -f "$BACKUP_FILE"
+fi
 
 # Ativa o cache
 sh -x acngonoff.sh

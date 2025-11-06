@@ -100,24 +100,16 @@ fi
 gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/oracle-jdk11-installer.gpg --keyserver keyserver.ubuntu.com --recv-keys EA8CACC073C3DB2A
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-jdk11-installer.gpg] https://ppa.launchpadcontent.net/linuxuprising/java/ubuntu jammy main" | sudo tee /etc/apt/sources.list.d/oracle-jdk11-installer.list > /dev/null
 
-# Adicionar assinatura GPG às entradas do sources.list
-SOURCES_FILE="/etc/apt/sources.list"
-BACKUP_FILE="/etc/apt/sources.list.bak.$(date +%Y%m%d_%H%M%S)"
-SIGNATURE_STRING="[signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg]"
-
-# Criar backup do arquivo original
+#  Cria o backup antes de adicionar assinatura GPG às entradas do sources.list
 SOURCES_FILE="/etc/apt/sources.list"
 BACKUP_FILE="/etc/apt/sources.list.bak.$(date +%Y%m%d_%H%M%S)"
 
-# Criar backup
 cp "$SOURCES_FILE" "$BACKUP_FILE"
 
-# Usar awk para processamento mais robusto
+# Processar com awk
 awk '
-/^deb[[:space:]]/ && /ubuntu\.com\/ubuntu\// && !/\[signed-by=\/usr\/share\/keyrings\/ubuntu-archive-keyring\.gpg\]/ {
-    # Adicionar assinatura após "deb"
-    gsub(/^deb /, "deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] ")
-    print $0
+$1 == "deb" && /ubuntu\.com\/ubuntu\// && !/\[signed-by=\/usr\/share\/keyrings\/ubuntu-archive-keyring\.gpg\]/ {
+    print "deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg]", substr($0, 5)
     next
 }
 { print }
@@ -126,6 +118,7 @@ awk '
 if [ -f "$BACKUP_FILE" ]; then
     rm -f "$BACKUP_FILE"
 fi
+echo "$SOURCES_FILE" " assinaturas GPG anexadas"
 
 # Ativa o cache
 sh -x acngonoff.sh

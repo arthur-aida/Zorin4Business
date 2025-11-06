@@ -106,45 +106,24 @@ BACKUP_FILE="/etc/apt/sources.list.bak.$(date +%Y%m%d_%H%M%S)"
 SIGNATURE_STRING="[signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg]"
 
 # Criar backup do arquivo original
-echo "Criando backup: $BACKUP_FILE"
+SOURCES_FILE="/etc/apt/sources.list"
+BACKUP_FILE="/etc/apt/sources.list.bak.$(date +%Y%m%d_%H%M%S)"
+
+# Criar backup
 cp "$SOURCES_FILE" "$BACKUP_FILE"
 
-# Verificar se o backup foi criado com sucesso
-if [ ! -f "$BACKUP_FILE" ]; then
-    echo "Erro: Não foi possível criar o backup do arquivo." >&2
-    exit 1
-fi
+# Usar awk para processamento mais robusto
+awk '
+/^deb[[:space:]]/ && /ubuntu\.com\/ubuntu\// && !/\[signed-by=\/usr\/share\/keyrings\/ubuntu-archive-keyring\.gpg\]/ {
+    # Adicionar assinatura após "deb"
+    gsub(/^deb /, "deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] ")
+    print $0
+    next
+}
+{ print }
+' "$SOURCES_FILE" > "$SOURCES_FILE.new" && mv "$SOURCES_FILE.new" "$SOURCES_FILE"
 
-# Criar arquivo temporário
-TEMP_FILE=$(mktemp)
-
-# Processar o arquivo
-while IFS= read -r line; do
-    # Verificar se a linha começa com "deb", contém "ubuntu.com/ubuntu/" mas NÃO contém a assinatura
-    if echo "$line" | grep -q '^deb[[:space:]]' && \
-       echo "$line" | grep -q 'ubuntu\.com/ubuntu/' && \
-       ! echo "$line" | grep -q '\[signed-by=/usr/share/keyrings/ubuntu-archive-keyring\.gpg\]'; then
-       
-        # Adicionar a assinatura após o "deb"
-        modified_line=$(echo "$line" | sed 's/^deb /deb '"$SIGNATURE_STRING"' /')
-        echo "$modified_line"
-    else
-        # Manter a linha original
-        echo "$line"
-    fi
-done < "$SOURCES_FILE" > "$TEMP_FILE"
-
-# Substituir o arquivo original
-mv "$TEMP_FILE" "$SOURCES_FILE"
-
-# Verificar se a operação foi bem-sucedida
-if [ $? -eq 0 ]; then
-    echo "Arquivo $SOURCES_FILE atualizado com sucesso!"
-    echo "Backup salvo como: $BACKUP_FILE"
-else
-    echo "Erro: Falha ao atualizar o arquivo." >&2
-    exit 1
-fi
+echo "Operação concluída. Backup em: $BACKUP_FILE"
 
 # Ativa o cache
 sh -x acngonoff.sh

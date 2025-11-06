@@ -106,7 +106,6 @@ SOURCES_FILE="/etc/apt/sources.list"
 BACKUP_FILE="/etc/apt/sources.list.bak.$(date +%Y%m%d_%H%M%S)"
 
 # Criar backup do arquivo original
-echo "Criando backup: $BACKUP_FILE"
 cp "$SOURCES_FILE" "$BACKUP_FILE"
 
 # Verificar se o backup foi criado com sucesso
@@ -131,8 +130,9 @@ sed -E '
 ' "$SOURCES_FILE" > "$TEMP_FILE"
 
 # Verificar diferenças
-echo "Diferenças entre original e modificado:"
+echo "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+Diferenças entre original e modificado:-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
 diff -u "$SOURCES_FILE" "$TEMP_FILE" || true
+echo "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+Diferenças entre original e modificado:-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
 
 # Substituir o arquivo original
 mv "$TEMP_FILE" "$SOURCES_FILE"

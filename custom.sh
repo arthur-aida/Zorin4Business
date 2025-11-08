@@ -84,6 +84,14 @@ if [ "$VerWine" != "wine-4.0.4" ] && [ ! -z "$siscofis" ] &&  [ "$PRETTY_NAME" =
 	apt-get install --assume-yes winetricks
 fi
 
+# " REMOVE A TRAVA DA VERSÃO wine-stable=4.0.4 PARA APLICAÇÕES CORPORATIVAS LEGADAS NO ZORIN OS E LIBERA PARA USAR O WINE ATUALIZADO"
+if  [ $site = "https://www.google.com.br" ]; then
+	# remove software corporativo para adequação ao uso domestico 
+	apt-mark unhold winehq-stable wine-stable wine-stable-amd64 wine-stable-i386:i386
+	apt purge wine* -y
+	apt autoremove -y
+fi
+
 # REATIVA O ACNG PÓS IMPORTAÇÃO DAS CHAVES  
 if [ ! -f /etc/apt/apt.conf.d/00aptproxy ]; then
 	sh -x $curdir/acngonoff.sh 

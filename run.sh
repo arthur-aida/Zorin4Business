@@ -76,6 +76,26 @@ grep -i "install" /var/log/dpkg.log > /etc/skel/custom/lista_software.txt.ori
 #  ARMAZENA OS SCRIPTS ORIGINAIS PARA AUDITORIA
 zip -v scriptscustom.zip  *.sh *.ips crontab hosts spice zorin* export*  >/dev/null
 
+# Remove o repositório e a chave do WineHQ antigos 
+rm /etc/apt/sources.list.d/winehq-*.sources
+rm /etc/apt/trusted.gpg.d/winehq.gpg
+
+# Recomendado adicionar a arquitetura de 32 bits, se ainda não estiver habilitada
+dpkg --add-architecture i386
+
+# Cria o diretório para os novos chaveiros
+mkdir -pm755 /etc/apt/keyrings
+
+# Baixa e move a nova chave do WineHQ para o diretório de chaveiros
+wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+
+# Adiciona o repositório com a nova sintaxe para o Ubuntu Jammy (22.04)
+# O `[signed-by=/etc/apt/keyrings/winehq-archive.key]` especifica o caminho da chave
+wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+
+# Comenta o antigo repositório WineHQ no sources.list principal (Delimitador alterado para '~')
+sed -i 's~deb https://dl.winehq.org/wine-builds/ubuntu/ ~#deb https://dl.winehq.org/wine-builds/ubuntu/ ~g' /etc/apt/sources.list
+
 if [ ! -f /etc/apt/sourceslist.ori.br ]; then
 	cp -f /etc/apt/sources.list /etc/apt/sourceslist.ori.br
 	sed -i 's/br./us./g' /etc/apt/sources.list

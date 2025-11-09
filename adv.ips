@@ -2,16 +2,15 @@
 
 #			VARIAVEIS DE CONFIGURAÇÃO PARA LIBERAR O SSH PARA AS REDES ESPECIFICADAS
 
-hostsallow0="sshd : 192.168.0.0/16" 				# Rede do KVM-linux na VM 
-hostsallow1="sshd : 192.168.122.0/24" 				# Rede do KVM-linux no servidor
-hostsallow2="sshd : 10.12.100.0/22" 				# LAN - DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
-hostsallow3="sshd : 127.0.0.1"
-hostsdeny="sshd : ALL"						# BLOQUEIO TOTAL DO SSH, EXCETO PARA LANs ACIMA
+export hostsallow0="sshd : 192.168.0.0/16" 				# Rede do KVM-linux na VM 
+export hostsallow1="sshd : 192.168.122.0/24" 				# Rede do KVM-linux no servidor
+export hostsallow2="sshd : 10.12.100.0/22" 				# LAN - DESATIVAR ESTA LINHA PARA USO DOMESTICO/ESCRITORIO
+export hostsallow3="sshd : 127.0.0.1"
+export hostsdeny="sshd : ALL"						# BLOQUEIO TOTAL DO SSH, EXCETO PARA LANs ACIMA
 
 
 
 
 
 #		DEFINIÇÕES PARA A USO DOMÉSTICO OU ESCRITÓRIO
-site="https://www.google.com.br" 						
-
+export site="https://www.google.com.br" 						

@@ -104,9 +104,9 @@ sed -i 's/deb cdrom/#deb cdrom/g' /etc/apt/sources.list
 
 # Carrega o arquivo de variáveis
 chmod 755 /etc/om.ips
-source . /etc/om.ips 
+source /etc/om.ips 
 rm -f /tmp/*.deb
-sources . /etc/os-release
+source /etc/os-release
 
 UBUNTU_CODENAME_NO_SUPPORT="noble"
 VERSION_CODENAME_NO_SUPPORT="xia"

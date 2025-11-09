@@ -102,10 +102,11 @@ if [ ! -f /etc/apt/sourceslist.ori.br ]; then
 fi
 sed -i 's/deb cdrom/#deb cdrom/g' /etc/apt/sources.list
 
-chmod 755 /etc/om.ips 
-. /etc/om.ips 
+# Carrega o arquivo de variáveis
+chmod 755 /etc/om.ips
+source . /etc/om.ips 
 rm -f /tmp/*.deb
-. /etc/os-release
+sources . /etc/os-release
 
 UBUNTU_CODENAME_NO_SUPPORT="noble"
 VERSION_CODENAME_NO_SUPPORT="xia"

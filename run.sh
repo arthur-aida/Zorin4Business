@@ -324,7 +324,7 @@ apt install brave-browser zorin-connect -y
 
 # O script TokenDXSafe.sh necessita de interação. DXSafeMiddleware.sh é autônomo.
 sh -x TokenDXSafe.sh 
-#sh -x DXSafeMiddleware.sh
+
 
 # ATUALMENTE o Certillion EXIGE LOADING SHARED LIBRARIES: libcrypto.so.1.1
 # Example: Manually download and install the .deb package

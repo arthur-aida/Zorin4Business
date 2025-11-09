@@ -54,6 +54,7 @@ if [ ! -f /usr/bin/proxmox-backup-client ]; then
 		echo "deb [arch=amd64 trusted=true] http://download.proxmox.com/debian/pve bullseye pve-no-subscription" | tee /etc/apt/sources.list.d/pvenosub.list
 	fi
 	apt-get update
+	rm -f /etc/default/smartmontools
 	apt-get install --install-recommends  --assume-yes proxmox-backup-client smartmontools
 
 	# CRIA O ARQUIVO /home/.pxarexclude PARA EXCLUIR PASTAS E ARQUIVOS ESPECIFICOS e MANTER .config e .mozilla"
